@@ -1,14 +1,5 @@
-interface Window {
-  caption: string;
-}
+import { KWindow } from './window';
 
-interface Workspace {
-  windowList(): Window[];
+export interface Workspace {
+  windowList(): KWindow[];
 }
-
-declare global {
-  const workspace: Workspace;
-  function print(message: string): void;
-}
-
-export {};

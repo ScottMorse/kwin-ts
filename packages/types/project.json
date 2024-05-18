@@ -1,5 +1,5 @@
 {
-  "name": "kwin-ts",
+  "name": "@kwin-ts/types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/types/src",
   "projectType": "library"

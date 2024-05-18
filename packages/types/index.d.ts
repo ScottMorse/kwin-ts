@@ -1,10 +1,4 @@
-interface Window {
-  caption: string;
-}
-
-interface Workspace {
-  windowList(): Window[];
-}
+import { Workspace } from './src/workspace';
 
 declare global {
   const workspace: Workspace;

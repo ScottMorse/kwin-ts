@@ -1,5 +1,5 @@
 import path from 'path';
-import { getScriptFiles } from 'kwin-ts/core/getScriptFiles';
+import { getScriptFiles } from 'packages/core/src/options/getScriptFiles';
 import {
   Configuration,
   rspack,
@@ -10,7 +10,7 @@ import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 import {
   FinalizedCompilerOptions,
   finalizeCompilerOptions,
-} from '../core/compilerOptions';
+} from '../options/compilerOptions';
 
 const resolveNodePolyfillPlugins = (
   option: FinalizedCompilerOptions['nodePolyfills']

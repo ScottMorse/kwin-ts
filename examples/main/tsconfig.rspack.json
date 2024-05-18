@@ -1,8 +1,6 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../config/base/tsconfig.json",
   "compilerOptions": {
-    "types": ["node"],
-    "module": "commonjs",
     "outDir": ".",
     "sourceMap": false
   },

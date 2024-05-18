@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "experimentalDecorators": false,
+    "importHelpers": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "typeRoots": ["../../node_modules/@types", "../../types"],
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@kwin-ts/core": ["../../packages/core/src/index.ts"],
+      "@kwin-ts/core/*": ["../../packages/core/src/*"],
+      "@kwin-ts/types": ["../../packages/types"]
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["./_file.ts"]
+}

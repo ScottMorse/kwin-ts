@@ -1,7 +1,7 @@
 import {
   CompilerOptions,
   finalizeCompilerOptions,
-} from './core/compilerOptions';
+} from './options/compilerOptions';
 import { compileWithRspack } from './rspack/compileWithRspack';
 
 export const compile = (options: CompilerOptions) =>
