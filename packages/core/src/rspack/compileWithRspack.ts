@@ -1,5 +1,5 @@
 import path from 'path';
-import { getScriptFiles } from 'packages/core/src/options/getScriptFiles';
+import { getScriptFiles } from '../options/getScriptFiles';
 import {
   Configuration,
   rspack,
