@@ -1,0 +1,50 @@
+{
+  "name": "kwin-ts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/kwin-ts/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "outputPath": "dist/packages/kwin-ts",
+        "main": "packages/kwin-ts/src/index.ts",
+        "tsConfig": "packages/kwin-ts/tsconfig.app.json",
+        "rspackConfig": "packages/kwin-ts/rspack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:dev-server",
+      "options": {
+        "buildTarget": "kwin-ts:build:development"
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "kwin-ts:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/kwin-ts/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+
+Not a valid TypScript file
+
+This should simply be ignored by the compiler if included in
+the inputs, so no errors should be associated with it.

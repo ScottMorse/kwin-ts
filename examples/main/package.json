@@ -1,0 +1,6 @@
+{
+  "name": "example-main",
+  "version": "0.0.1",
+  "main": "./rspack.config.js",
+  "type": "commonjs"
+}

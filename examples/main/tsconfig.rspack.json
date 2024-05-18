@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "module": "commonjs",
+    "outDir": ".",
+    "sourceMap": false
+  },
+  "files": ["rspack.config.ts"]
+}
