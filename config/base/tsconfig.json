@@ -23,5 +23,6 @@
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   },
-  "include": ["./_file.ts"]
+  "include": ["./_file.ts"],
+  "exclude": ["**/node_modules/**/*", "**/dist/**/*", "**/kwin-ts-output/**/*"]
 }

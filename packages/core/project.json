@@ -13,7 +13,7 @@
         "target": "node",
         "outputPath": "dist/packages/core",
         "main": "packages/core/src/index.ts",
-        "tsConfig": "packages/core/tsconfig.app.json",
+        "tsConfig": "packages/core/tsconfig.package.json",
         "rspackConfig": "packages/core/rspack.config.js"
       },
       "configurations": {
@@ -27,16 +27,34 @@
         }
       }
     },
-    "serve": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx run @kwin-ts/core:_compile-rspack-config",
+          "npx nx run @kwin-ts/core:_serve"
+        ],
+        "parallel": false
+      }
+    },
+    "_serve": {
       "executor": "@nx/rspack:dev-server",
       "options": {
-        "buildTarget": "kwin-ts:build:development"
+        "buildTarget": "@kwin-ts/core:build:development"
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "buildTarget": "@kwin-ts/core:build:development"
+        },
         "production": {
-          "buildTarget": "kwin-ts:build:production"
+          "buildTarget": "@kwin-ts/core:build:production"
         }
+      }
+    },
+    "_compile-rspack-config": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsc -p packages/core/tsconfig.rspack.json"
       }
     },
     "test": {

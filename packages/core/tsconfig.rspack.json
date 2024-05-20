@@ -1,0 +1,9 @@
+{
+  "extends": "../../config/base/tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".",
+    "sourceMap": false,
+    "noEmit": false
+  },
+  "include": ["./rspack.config.ts"]
+}
