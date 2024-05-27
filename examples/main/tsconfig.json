@@ -7,9 +7,6 @@
     },
     {
       "path": "./tsconfig.kwin.json"
-    },
-    {
-      "path": "./tsconfig.rspack.json"
     }
   ],
   "extends": "../../config/base/tsconfig.json"

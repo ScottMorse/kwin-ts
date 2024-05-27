@@ -13,11 +13,14 @@
     "skipDefaultLibCheck": true,
     "typeRoots": ["../../node_modules/@types", "../../types"],
     "noEmit": true,
+    "noImplicitAny": true,
+    "target": "ES6",
     "baseUrl": ".",
     "paths": {
       "@kwin-ts/core": ["../../packages/core/src/index.ts"],
       "@kwin-ts/core/*": ["../../packages/core/src/*"],
-      "@kwin-ts/types": ["../../packages/types"]
+      "@kwin-ts/types": ["../../packages/types"],
+      "@kwin-ts/types/*": ["../../packages/types/*"]
     }
   },
   "ts-node": {

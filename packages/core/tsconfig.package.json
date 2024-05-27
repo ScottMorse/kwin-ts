@@ -1,5 +1,8 @@
 {
   "extends": "../../config/package/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true
+  },
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",

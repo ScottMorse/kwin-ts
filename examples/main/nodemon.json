@@ -1,0 +1,20 @@
+{
+  "ext": "js,ts,json",
+  "events": {
+    "start": "clear"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "watch": [
+    ".",
+    "../../packages",
+    "../../config",
+    "../../package.json",
+    "../../types",
+    "../../config"
+  ],
+  "execMap": {
+    "ts": "(cd ../../ && (nx lint example-main || true) & nx start example-main) #"
+  }
+}

@@ -5,10 +5,25 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "lint": {},
     "dev": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["npx nodemon src/main.ts"],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "dev-quick": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx nodemon --exec 'ts-node' src/main.ts"],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["ts-node src/main.ts"],
         "cwd": "{projectRoot}"
       }
     }

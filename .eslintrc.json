@@ -1,7 +1,10 @@
 {
   "root": true,
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "dist", "output", "kwin-ts-output"],
   "plugins": ["@nx"],
+  "rules": {
+    "no-console": "warn"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
