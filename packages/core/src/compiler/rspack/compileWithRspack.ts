@@ -1,21 +1,21 @@
 import path from 'path';
-import { getScriptFiles } from '../options/getScriptFiles';
+import fs from 'fs';
+import { FindInputFilesResult } from '../inputFile/findInputFiles';
 import {
-  Configuration,
   rspack,
   optimize,
   RspackPluginInstance,
+  EnvironmentPlugin,
+  DefinePlugin,
+  SwcLoaderOptions,
 } from '@rspack/core';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-import {
-  CompilerOptions,
-  finalizeCompilerOptions,
-} from '../options/compilerOptions';
+import { CompilerOptions } from '../options/compilerOptions';
 import { InjectScriptsPlugin } from './plugins/injectScripts/InjectScriptsPlugin';
 import { CompilationResult } from '../result/compilationResult';
 import { createRemotePromise } from '@kwin-ts/core/internal/async/promise';
-import { compileLogger } from '../logger';
 import { rspackLogger } from './logger';
+import { KWIN_TS_RUNTIME_PATH } from '@kwin-ts/core/runtime';
 
 const resolveNodePolyfillPlugins = (
   option: CompilerOptions['nodePolyfills']
@@ -38,48 +38,48 @@ const resolveNodePolyfillPlugins = (
 };
 
 export const compileWithRspack = async (
-  _options: CompilerOptions,
+  options: CompilerOptions,
+  inputFiles: FindInputFilesResult
 ): Promise<CompilationResult> => {
   const logger = rspackLogger.clone();
-
-  logger.options.verbosity = _options.verbosity ?? logger.options.verbosity;
-
-  const options = finalizeCompilerOptions(_options);
-  for (const [key, value] of Object.entries(options)) {
-    logger.debug(
-      `Option: ${key} = ${typeof value === 'string' ? `"${value}"` : value}`
-    );
-  }
+  logger.options.verbosity = options.verbosity ?? logger.options.verbosity;
 
   logger.debug('Compiling via rspack');
 
   const remotePromise = createRemotePromise<CompilationResult>();
 
-  const files = getScriptFiles(...options.inputs);
-  logger.info(
-    `Found ${files.length} file${files.length === 1 ? '' : 's'} to compile.`
-  );
-
-  const entry = files.reduce((entry, file) => {
-    if (!file.endsWith('.ts')) return entry;
-    const name = file.replace(/.+\/|\.ts$/g, '');
-    entry[name] = file;
-    logger.debug(`Added entry "${name}": ${file}`);
+  const entry = inputFiles.entry.reduce((entry, file) => {
+    const entryName = file.relativePath.replace(/\..+$/, '');
+    entry[entryName] = [KWIN_TS_RUNTIME_PATH, file.absolutePath];
+    logger.debug(`Added entry "${entryName}": ${file.relativePath}`);
     return entry;
-  }, {} as Record<string, string>);
+  }, {} as Record<string, string[]>);
 
   const defaultOutputPath = path.resolve(
-    options.outputPath ?? './kwin-ts-output'
+    options.outputDirectory ?? './kwin-ts-output'
   );
   logger.debug('Output path:', defaultOutputPath);
 
   const plugins: RspackPluginInstance[] = [
+    new EnvironmentPlugin({
+      NODE_ENV: process.env.NODE_ENV,
+    }),
+    new DefinePlugin(
+      Object.entries({
+        __KWIN_TS_RUNTIME_RAW_FORMATTING: options.rawLogFormatting,
+        ...options.environmentVariables,
+      }).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          ['process.env.' + key]: JSON.stringify(value),
+        }),
+        {}
+      )
+    ),
     new optimize.LimitChunkCountPlugin({
       maxChunks: Object.keys(entry).length,
     }),
-    new InjectScriptsPlugin({
-      optimize: !options.disableOptimization,
-    }),
+    new InjectScriptsPlugin(options),
     ...resolveNodePolyfillPlugins(options.nodePolyfills),
   ];
 
@@ -89,23 +89,23 @@ export const compileWithRspack = async (
     )
   );
 
-  const mode = options.disableOptimization
-    ? 'development'
-    : process.env.NODE_ENV === 'development'
-    ? 'development'
-    : 'production';
-
+  const mode = options.optimize ? 'production' : 'development';
   logger.info('Using mode: ' + mode);
+
+  const swcLoaderOptions: SwcLoaderOptions = {};
 
   const compiler = rspack({
     entry,
-    target: 'node',
+    mode,
+    plugins,
     output: {
       filename: '[name].js',
       path: defaultOutputPath,
       clean: true,
     },
-    mode,
+    resolve: {
+      extensions: ['.js', '.ts'],
+    },
     node: {
       global: false,
       __dirname: false,
@@ -113,26 +113,43 @@ export const compileWithRspack = async (
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(t|js)sx?$/,
           use: {
             loader: 'builtin:swc-loader',
+            options: swcLoaderOptions,
           },
           exclude: /node_modules/,
         },
       ],
     },
-    plugins,
   });
 
   logger.debug('Running compiler');
   compiler.run((err, stats) => {
     logger.debug('Compiler finished');
-    logger.debug(`Stats:\n${stats?.toString()}`);
+    logger.debug(`rspack Stats:\n${stats}`);
+
+    const outputs = Object.entries(stats?.toJson().namedChunkGroups ?? {}).map(
+      ([name]) => ({
+        outputPath: path.resolve(defaultOutputPath, name + '.js'),
+        input: inputFiles.all.find((file) =>
+          file.relativePath.match(new RegExp(name + '.[tj]s$'))
+        ) ?? {
+          absolutePath: '(error)',
+          ext: '(error)',
+          inputPatternMatch: '(error)',
+          name: '(error)',
+          nameWithExt: '(error)',
+          relativePath: '(error)',
+          type: 'entry',
+        },
+      })
+    );
 
     if (err) {
       logger.error(err);
       remotePromise.resolve({
-        outputs: [],
+        outputs,
         success: false,
       });
       return;
@@ -141,10 +158,14 @@ export const compileWithRspack = async (
     // const info = stats?.compilation.chunks
     remotePromise.resolve({
       /** @todo */
-      outputs: [],
+      outputs,
       success: true,
     });
   });
 
-  return await remotePromise;
+  const result = await remotePromise;
+
+  logger.info('Completed');
+
+  return result;
 };

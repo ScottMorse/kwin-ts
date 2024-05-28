@@ -187,12 +187,5 @@ const _createLogger = (options?: CreateLoggerOptions): Logger => {
 
 export const defaultLogger = _createLogger();
 
-defaultLogger.debug(
-  `Logging enabled (using default verbosity "${resolveOption(
-    defaultLogger,
-    'verbosity'
-  )}")`
-);
-
 export const createLogger = (options?: CreateLoggerOptions) =>
   defaultLogger.createChild(options);

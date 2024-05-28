@@ -1,5 +1,9 @@
 {
   "extends": "../../config/package/tsconfig.json",
+  "compilerOptions": {
+    "lib": [],
+    "types": ["@kwin-ts/types"]
+  },
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",
@@ -11,5 +15,11 @@
     "src/**/*.spec.jsx",
     "src/**/*.test.jsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "**/*.d.ts"
+  ]
 }

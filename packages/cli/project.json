@@ -1,0 +1,68 @@
+{
+  "name": "@kwin-ts/cli",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/cli/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "outputPath": "dist/packages/cli",
+        "main": "packages/cli/src/index.ts",
+        "tsConfig": "packages/cli/tsconfig.package.json",
+        "rspackConfig": "packages/cli/rspack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false
+        }
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx run @kwin-ts/cli:_compile-rspack-config",
+          "npx nx run @kwin-ts/cli:_serve"
+        ],
+        "parallel": false
+      }
+    },
+    "_serve": {
+      "executor": "@nx/rspack:dev-server",
+      "options": {
+        "buildTarget": "@kwin-ts/cli:build:development"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "@kwin-ts/cli:build:development"
+        },
+        "production": {
+          "buildTarget": "@kwin-ts/cli:build:production"
+        }
+      }
+    },
+    "_compile-rspack-config": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsc -p packages/cli/tsconfig.rspack.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/cli/jest.config.ts"
+      }
+    }
+  }
+}

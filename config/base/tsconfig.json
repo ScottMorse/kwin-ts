@@ -14,8 +14,9 @@
     "typeRoots": ["../../node_modules/@types", "../../types"],
     "noEmit": true,
     "noImplicitAny": true,
-    "target": "ES6",
+    "target": "ES5",
     "baseUrl": ".",
+    "types": ["node"],
     "paths": {
       "@kwin-ts/core": ["../../packages/core/src/index.ts"],
       "@kwin-ts/core/*": ["../../packages/core/src/*"],

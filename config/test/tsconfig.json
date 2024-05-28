@@ -1,6 +1,7 @@
 {
   "extends": "../base/tsconfig.json",
   "compilerOptions": {
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "lib": ["ES2015"]
   }
 }

@@ -3,6 +3,9 @@
   "compilerOptions": {
     "types": ["node"],
     "outDir": "./dist",
-    "noEmit": false
-  }
+    "noEmit": false,
+    "target": "ES6",
+    "experimentalDecorators": true
+  },
+  "exclude": ["../../packages/types"]
 }

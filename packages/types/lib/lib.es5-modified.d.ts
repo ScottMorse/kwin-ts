@@ -1,16 +1,23 @@
 /* eslint-disable */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
 
-/**
- * This is a modified copy
- * of the TypeScript lib.es5.d.ts file.
- *
- * The QtScript engine has mixed support for ES5 features.
- *
- * Comments starting with QT are added to highlight
- * customizations of the original file.
- */
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
 
 /// <reference no-default-lib="true"/>
+
+/// <reference lib="decorators" />
+/// <reference lib="decorators.legacy" />
 
 /////////////////////////////
 /// ECMAScript APIs
@@ -5341,182 +5348,182 @@ declare var Float64Array: Float64ArrayConstructor;
 /// ECMAScript Internationalization API
 /////////////////////////////
 
-declare namespace Intl {
-  interface CollatorOptions {
-    usage?: 'sort' | 'search' | undefined;
-    localeMatcher?: 'lookup' | 'best fit' | undefined;
-    numeric?: boolean | undefined;
-    caseFirst?: 'upper' | 'lower' | 'false' | undefined;
-    sensitivity?: 'base' | 'accent' | 'case' | 'variant' | undefined;
-    collation?:
-      | 'big5han'
-      | 'compat'
-      | 'dict'
-      | 'direct'
-      | 'ducet'
-      | 'emoji'
-      | 'eor'
-      | 'gb2312'
-      | 'phonebk'
-      | 'phonetic'
-      | 'pinyin'
-      | 'reformed'
-      | 'searchjl'
-      | 'stroke'
-      | 'trad'
-      | 'unihan'
-      | 'zhuyin'
-      | undefined;
-    ignorePunctuation?: boolean | undefined;
-  }
+// * COMMENTED OUT (NOT AVAILABLE INTL QTSCRIPT)
+// declare namespace Intl {
+//   interface CollatorOptions {
+//     usage?: 'sort' | 'search' | undefined;
+//     localeMatcher?: 'lookup' | 'best fit' | undefined;
+//     numeric?: boolean | undefined;
+//     caseFirst?: 'upper' | 'lower' | 'false' | undefined;
+//     sensitivity?: 'base' | 'accent' | 'case' | 'variant' | undefined;
+//     collation?:
+//       | 'big5han'
+//       | 'compat'
+//       | 'dict'
+//       | 'direct'
+//       | 'ducet'
+//       | 'emoji'
+//       | 'eor'
+//       | 'gb2312'
+//       | 'phonebk'
+//       | 'phonetic'
+//       | 'pinyin'
+//       | 'reformed'
+//       | 'searchjl'
+//       | 'stroke'
+//       | 'trad'
+//       | 'unihan'
+//       | 'zhuyin'
+//       | undefined;
+//     ignorePunctuation?: boolean | undefined;
+//   }
 
-  interface ResolvedCollatorOptions {
-    locale: string;
-    usage: string;
-    sensitivity: string;
-    ignorePunctuation: boolean;
-    collation: string;
-    caseFirst: string;
-    numeric: boolean;
-  }
-
-  interface Collator {
-    compare(x: string, y: string): number;
-    resolvedOptions(): ResolvedCollatorOptions;
-  }
-
-  interface CollatorConstructor {
-    new (locales?: string | string[], options?: CollatorOptions): Collator;
-    (locales?: string | string[], options?: CollatorOptions): Collator;
-    supportedLocalesOf(
-      locales: string | string[],
-      options?: CollatorOptions
-    ): string[];
-  }
-
-  var Collator: CollatorConstructor;
-
-  interface NumberFormatOptions {
-    localeMatcher?: string | undefined;
-    style?: string | undefined;
-    currency?: string | undefined;
-    currencySign?: string | undefined;
-    useGrouping?: boolean | undefined;
-    minimumIntegerDigits?: number | undefined;
-    minimumFractionDigits?: number | undefined;
-    maximumFractionDigits?: number | undefined;
-    minimumSignificantDigits?: number | undefined;
-    maximumSignificantDigits?: number | undefined;
-  }
-
-  interface ResolvedNumberFormatOptions {
-    locale: string;
-    numberingSystem: string;
-    style: string;
-    currency?: string;
-    minimumIntegerDigits: number;
-    minimumFractionDigits: number;
-    maximumFractionDigits: number;
-    minimumSignificantDigits?: number;
-    maximumSignificantDigits?: number;
-    useGrouping: boolean;
-  }
-
-  interface NumberFormat {
-    format(value: number): string;
-    resolvedOptions(): ResolvedNumberFormatOptions;
-  }
-
-  interface NumberFormatConstructor {
-    new (
-      locales?: string | string[],
-      options?: NumberFormatOptions
-    ): NumberFormat;
-    (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
-    supportedLocalesOf(
-      locales: string | string[],
-      options?: NumberFormatOptions
-    ): string[];
-    readonly prototype: NumberFormat;
-  }
-
-  var NumberFormat: NumberFormatConstructor;
-
-  interface DateTimeFormatOptions {
-    localeMatcher?: 'best fit' | 'lookup' | undefined;
-    weekday?: 'long' | 'short' | 'narrow' | undefined;
-    era?: 'long' | 'short' | 'narrow' | undefined;
-    year?: 'numeric' | '2-digit' | undefined;
-    month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined;
-    day?: 'numeric' | '2-digit' | undefined;
-    hour?: 'numeric' | '2-digit' | undefined;
-    minute?: 'numeric' | '2-digit' | undefined;
-    second?: 'numeric' | '2-digit' | undefined;
-    timeZoneName?:
-      | 'short'
-      | 'long'
-      | 'shortOffset'
-      | 'longOffset'
-      | 'shortGeneric'
-      | 'longGeneric'
-      | undefined;
-    formatMatcher?: 'best fit' | 'basic' | undefined;
-    hour12?: boolean | undefined;
-    timeZone?: string | undefined;
-  }
-
-  interface ResolvedDateTimeFormatOptions {
-    locale: string;
-    calendar: string;
-    numberingSystem: string;
-    timeZone: string;
-    hour12?: boolean;
-    weekday?: string;
-    era?: string;
-    year?: string;
-    month?: string;
-    day?: string;
-    hour?: string;
-    minute?: string;
-    second?: string;
-    timeZoneName?: string;
-  }
-
-  interface DateTimeFormat {
-    format(date?: Date | number): string;
-    resolvedOptions(): ResolvedDateTimeFormatOptions;
-  }
-
-  interface DateTimeFormatConstructor {
-    new (
-      locales?: string | string[],
-      options?: DateTimeFormatOptions
-    ): DateTimeFormat;
-    (
-      locales?: string | string[],
-      options?: DateTimeFormatOptions
-    ): DateTimeFormat;
-    supportedLocalesOf(
-      locales: string | string[],
-      options?: DateTimeFormatOptions
-    ): string[];
-    readonly prototype: DateTimeFormat;
-  }
-
-  var DateTimeFormat: DateTimeFormatConstructor;
+interface ResolvedCollatorOptions {
+  locale: string;
+  usage: string;
+  sensitivity: string;
+  ignorePunctuation: boolean;
+  collation: string;
+  caseFirst: string;
+  numeric: boolean;
 }
+
+interface Collator {
+  compare(x: string, y: string): number;
+  resolvedOptions(): ResolvedCollatorOptions;
+}
+
+interface CollatorConstructor {
+  new (locales?: string | string[], options?: CollatorOptions): Collator;
+  (locales?: string | string[], options?: CollatorOptions): Collator;
+  supportedLocalesOf(
+    locales: string | string[],
+    options?: CollatorOptions
+  ): string[];
+}
+
+var Collator: CollatorConstructor;
+
+interface NumberFormatOptions {
+  localeMatcher?: string | undefined;
+  style?: string | undefined;
+  currency?: string | undefined;
+  currencySign?: string | undefined;
+  useGrouping?: boolean | undefined;
+  minimumIntegerDigits?: number | undefined;
+  minimumFractionDigits?: number | undefined;
+  maximumFractionDigits?: number | undefined;
+  minimumSignificantDigits?: number | undefined;
+  maximumSignificantDigits?: number | undefined;
+}
+
+interface ResolvedNumberFormatOptions {
+  locale: string;
+  numberingSystem: string;
+  style: string;
+  currency?: string;
+  minimumIntegerDigits: number;
+  minimumFractionDigits: number;
+  maximumFractionDigits: number;
+  minimumSignificantDigits?: number;
+  maximumSignificantDigits?: number;
+  useGrouping: boolean;
+}
+
+interface NumberFormat {
+  format(value: number): string;
+  resolvedOptions(): ResolvedNumberFormatOptions;
+}
+
+interface NumberFormatConstructor {
+  new (
+    locales?: string | string[],
+    options?: NumberFormatOptions
+  ): NumberFormat;
+  (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
+  supportedLocalesOf(
+    locales: string | string[],
+    options?: NumberFormatOptions
+  ): string[];
+  readonly prototype: NumberFormat;
+}
+
+var NumberFormat: NumberFormatConstructor;
+
+interface DateTimeFormatOptions {
+  localeMatcher?: 'best fit' | 'lookup' | undefined;
+  weekday?: 'long' | 'short' | 'narrow' | undefined;
+  era?: 'long' | 'short' | 'narrow' | undefined;
+  year?: 'numeric' | '2-digit' | undefined;
+  month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined;
+  day?: 'numeric' | '2-digit' | undefined;
+  hour?: 'numeric' | '2-digit' | undefined;
+  minute?: 'numeric' | '2-digit' | undefined;
+  second?: 'numeric' | '2-digit' | undefined;
+  timeZoneName?:
+    | 'short'
+    | 'long'
+    | 'shortOffset'
+    | 'longOffset'
+    | 'shortGeneric'
+    | 'longGeneric'
+    | undefined;
+  formatMatcher?: 'best fit' | 'basic' | undefined;
+  hour12?: boolean | undefined;
+  timeZone?: string | undefined;
+}
+
+interface ResolvedDateTimeFormatOptions {
+  locale: string;
+  calendar: string;
+  numberingSystem: string;
+  timeZone: string;
+  hour12?: boolean;
+  weekday?: string;
+  era?: string;
+  year?: string;
+  month?: string;
+  day?: string;
+  hour?: string;
+  minute?: string;
+  second?: string;
+  timeZoneName?: string;
+}
+
+interface DateTimeFormat {
+  format(date?: Date | number): string;
+  resolvedOptions(): ResolvedDateTimeFormatOptions;
+}
+
+interface DateTimeFormatConstructor {
+  new (
+    locales?: string | string[],
+    options?: DateTimeFormatOptions
+  ): DateTimeFormat;
+  (
+    locales?: string | string[],
+    options?: DateTimeFormatOptions
+  ): DateTimeFormat;
+  supportedLocalesOf(
+    locales: string | string[],
+    options?: DateTimeFormatOptions
+  ): string[];
+  readonly prototype: DateTimeFormat;
+}
+
+var DateTimeFormat: DateTimeFormatConstructor;
 
 interface String {
   /**
    * Determines whether two strings are equivalent in the current or specified locale.
    * @param that String to compare to target string
    * @param locales A locale string or array of locale strings that contain one or more language or locale tags. If you include more than one locale string, list them in descending order of priority so that the first entry is the preferred locale. If you omit this parameter, the default locale of the JavaScript runtime is used. This parameter must conform to BCP 47 standards; see the Intl.Collator object for details.
-   * @param options An object that contains one or more properties that specify comparison options. see the Intl.Collator object for details.
    */
   localeCompare(
     that: string,
-    locales?: string | string[],
-    options?: Intl.CollatorOptions
+    locales?: string | string[]
+    // * COMMENTED OUT (NOT AVAILABLE IN QTSCRIPT)
+    // options?: Intl.CollatorOptions
   ): number;
 }
 
@@ -5527,8 +5534,9 @@ interface Number {
    * @param options An object that contains one or more properties that specify comparison options.
    */
   toLocaleString(
-    locales?: string | string[],
-    options?: Intl.NumberFormatOptions
+    locales?: string | string[]
+    // * COMMENTED OUT (NOT AVAILABLE IN QTSCRIPT)
+    // options?: Intl.NumberFormatOptions
   ): string;
 }
 
@@ -5539,8 +5547,9 @@ interface Date {
    * @param options An object that contains one or more properties that specify comparison options.
    */
   toLocaleString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
+    locales?: string | string[]
+    // * COMMENTED OUT (NOT AVAILABLE IN QTSCRIPT)
+    // options?: Intl.DateTimeFormatOptions
   ): string;
   /**
    * Converts a date to a string by using the current or specified locale.
@@ -5548,8 +5557,9 @@ interface Date {
    * @param options An object that contains one or more properties that specify comparison options.
    */
   toLocaleDateString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
+    locales?: string | string[]
+    // * COMMENTED OUT (NOT AVAILABLE IN QTSCRIPT)
+    // options?: Intl.DateTimeFormatOptions
   ): string;
 
   /**
@@ -5558,532 +5568,8 @@ interface Date {
    * @param options An object that contains one or more properties that specify comparison options.
    */
   toLocaleTimeString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
+    locales?: string | string[]
+    // * COMMENTED OUT (NOT AVAILABLE IN QTSCRIPT)
+    // options?: Intl.DateTimeFormatOptions
   ): string;
-}
-
-interface SymbolConstructor {
-  /**
-   * A method that returns the default iterator for an object. Called by the semantics of the
-   * for-of statement.
-   */
-  readonly iterator: unique symbol;
-}
-
-interface IteratorYieldResult<TYield> {
-  done?: false;
-  value: TYield;
-}
-
-interface IteratorReturnResult<TReturn> {
-  done: true;
-  value: TReturn;
-}
-
-type IteratorResult<T, TReturn = any> =
-  | IteratorYieldResult<T>
-  | IteratorReturnResult<TReturn>;
-
-interface Iterator<T, TReturn = any, TNext = undefined> {
-  // NOTE: 'next' is defined using a tuple to ensure we report the correct assignability errors in all places.
-  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
-  return?(value?: TReturn): IteratorResult<T, TReturn>;
-  throw?(e?: any): IteratorResult<T, TReturn>;
-}
-
-interface Iterable<T> {
-  [Symbol.iterator](): Iterator<T>;
-}
-
-interface IterableIterator<T> extends Iterator<T> {
-  [Symbol.iterator](): IterableIterator<T>;
-}
-
-interface Array<T> {
-  /** Iterator */
-  [Symbol.iterator](): IterableIterator<T>;
-
-  /**
-   * Returns an iterable of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, T]>;
-
-  /**
-   * Returns an iterable of keys in the array
-   */
-  keys(): IterableIterator<number>;
-
-  /**
-   * Returns an iterable of values in the array
-   */
-  values(): IterableIterator<T>;
-}
-
-interface ArrayConstructor {
-  /**
-   * Creates an array from an iterable object.
-   * @param iterable An iterable object to convert to an array.
-   */
-  from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
-
-  /**
-   * Creates an array from an iterable object.
-   * @param iterable An iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from<T, U>(
-    iterable: Iterable<T> | ArrayLike<T>,
-    mapfn: (v: T, k: number) => U,
-    thisArg?: any
-  ): U[];
-}
-
-interface ReadonlyArray<T> {
-  /** Iterator of values in the array. */
-  [Symbol.iterator](): IterableIterator<T>;
-
-  /**
-   * Returns an iterable of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, T]>;
-
-  /**
-   * Returns an iterable of keys in the array
-   */
-  keys(): IterableIterator<number>;
-
-  /**
-   * Returns an iterable of values in the array
-   */
-  values(): IterableIterator<T>;
-}
-
-interface IArguments {
-  /** Iterator */
-  [Symbol.iterator](): IterableIterator<any>;
-}
-
-interface Map<K, V> {
-  /** Returns an iterable of entries in the map. */
-  [Symbol.iterator](): IterableIterator<[K, V]>;
-
-  /**
-   * Returns an iterable of key, value pairs for every entry in the map.
-   */
-  entries(): IterableIterator<[K, V]>;
-
-  /**
-   * Returns an iterable of keys in the map
-   */
-  keys(): IterableIterator<K>;
-
-  /**
-   * Returns an iterable of values in the map
-   */
-  values(): IterableIterator<V>;
-}
-
-interface ReadonlyMap<K, V> {
-  /** Returns an iterable of entries in the map. */
-  [Symbol.iterator](): IterableIterator<[K, V]>;
-
-  /**
-   * Returns an iterable of key, value pairs for every entry in the map.
-   */
-  entries(): IterableIterator<[K, V]>;
-
-  /**
-   * Returns an iterable of keys in the map
-   */
-  keys(): IterableIterator<K>;
-
-  /**
-   * Returns an iterable of values in the map
-   */
-  values(): IterableIterator<V>;
-}
-
-interface MapConstructor {
-  new (): Map<any, any>;
-  new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
-}
-
-interface WeakMap<K extends WeakKey, V> {}
-
-declare var WeakMap: WeakMapConstructor;
-
-interface WeakMapConstructor {
-  new <K extends WeakKey, V>(iterable: Iterable<readonly [K, V]>): WeakMap<
-    K,
-    V
-  >;
-}
-
-interface Set<T> {
-  /** Iterates over values in the set. */
-  [Symbol.iterator](): IterableIterator<T>;
-  /**
-   * Returns an iterable of [v,v] pairs for every value `v` in the set.
-   */
-  entries(): IterableIterator<[T, T]>;
-  /**
-   * Despite its name, returns an iterable of the values in the set.
-   */
-  keys(): IterableIterator<T>;
-
-  /**
-   * Returns an iterable of values in the set.
-   */
-  values(): IterableIterator<T>;
-}
-
-interface ReadonlySet<T> {
-  /** Iterates over values in the set. */
-  [Symbol.iterator](): IterableIterator<T>;
-
-  /**
-   * Returns an iterable of [v,v] pairs for every value `v` in the set.
-   */
-  entries(): IterableIterator<[T, T]>;
-
-  /**
-   * Despite its name, returns an iterable of the values in the set.
-   */
-  keys(): IterableIterator<T>;
-
-  /**
-   * Returns an iterable of values in the set.
-   */
-  values(): IterableIterator<T>;
-}
-
-interface SetConstructor {
-  new <T>(iterable?: Iterable<T> | null): Set<T>;
-}
-
-interface WeakSet<T extends WeakKey> {}
-
-interface WeakSetConstructor {
-  new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
-}
-
-declare var WeakSet: WeakSetConstructor;
-
-interface Promise<T> {}
-
-interface PromiseConstructor {
-  /**
-   * Creates a Promise that is resolved with an array of results when all of the provided Promises
-   * resolve, or rejected when any Promise is rejected.
-   * @param values An iterable of Promises.
-   * @returns A new Promise.
-   */
-  all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
-
-  /**
-   * Creates a Promise that is resolved or rejected when any of the provided Promises are resolved
-   * or rejected.
-   * @param values An iterable of Promises.
-   * @returns A new Promise.
-   */
-  race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
-}
-
-interface String {
-  /** Iterator */
-  [Symbol.iterator](): IterableIterator<string>;
-}
-
-interface Int8Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Int8ArrayConstructor {
-  new (elements: Iterable<number>): Int8Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Int8Array;
-}
-
-interface Uint8Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Uint8ArrayConstructor {
-  new (elements: Iterable<number>): Uint8Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Uint8Array;
-}
-
-interface Uint8ClampedArray {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Uint8ClampedArrayConstructor {
-  new (elements: Iterable<number>): Uint8ClampedArray;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Uint8ClampedArray;
-}
-
-interface Int16Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Int16ArrayConstructor {
-  new (elements: Iterable<number>): Int16Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Int16Array;
-}
-
-interface Uint16Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Uint16ArrayConstructor {
-  new (elements: Iterable<number>): Uint16Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Uint16Array;
-}
-
-interface Int32Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Int32ArrayConstructor {
-  new (elements: Iterable<number>): Int32Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Int32Array;
-}
-
-interface Uint32Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Uint32ArrayConstructor {
-  new (elements: Iterable<number>): Uint32Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Uint32Array;
-}
-
-interface Float32Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Float32ArrayConstructor {
-  new (elements: Iterable<number>): Float32Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Float32Array;
-}
-
-interface Float64Array {
-  [Symbol.iterator](): IterableIterator<number>;
-  /**
-   * Returns an array of key, value pairs for every entry in the array
-   */
-  entries(): IterableIterator<[number, number]>;
-  /**
-   * Returns an list of keys in the array
-   */
-  keys(): IterableIterator<number>;
-  /**
-   * Returns an list of values in the array
-   */
-  values(): IterableIterator<number>;
-}
-
-interface Float64ArrayConstructor {
-  new (elements: Iterable<number>): Float64Array;
-
-  /**
-   * Creates an array from an array-like or iterable object.
-   * @param arrayLike An array-like or iterable object to convert to an array.
-   * @param mapfn A mapping function to call on every element of the array.
-   * @param thisArg Value of 'this' used to invoke the mapfn.
-   */
-  from(
-    arrayLike: Iterable<number>,
-    mapfn?: (v: number, k: number) => number,
-    thisArg?: any
-  ): Float64Array;
 }

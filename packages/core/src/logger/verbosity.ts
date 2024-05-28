@@ -36,8 +36,10 @@ const resolveVerbosityAlias = <V extends VerbosityLevel>(
 export const resolveLogLevel = (verbosity: VerbosityLevel): LogLevel =>
   resolveVerbosityAlias(resolveDefaultVerbosity(verbosity));
 
-if (process.env.KWIN_TS_VERBOSITY) {
+if (process.env.KWIN_TS_LOGGING_VERBOSITY) {
   setLoggingDefaults({
-    verbosity: resolveLogLevel(process.env.KWIN_TS_VERBOSITY as VerbosityLevel),
+    verbosity: resolveLogLevel(
+      process.env.KWIN_TS_LOGGING_VERBOSITY as VerbosityLevel
+    ),
   });
 }

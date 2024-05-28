@@ -9,9 +9,6 @@
     "src/**/*.test.js",
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
-    "src/**/*.spec.jsx",
-    "src/**/*.d.ts",
-    "src/globals.ts",
-    "es3.d.ts"
+    "src/**/*.spec.jsx"
   ]
 }

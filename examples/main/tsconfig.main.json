@@ -1,4 +1,9 @@
 {
-  "extends": "../../config/base/tsconfig.json",
-  "files": ["src/main.ts"]
+  "extends": "../../config/package/tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ESNext"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/scripts/**/*"]
 }

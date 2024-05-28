@@ -1,4 +1,5 @@
-export interface KWinGlobalThis {
+export interface KWinGlobalMethods {
+  print: typeof console.log;
   /** @todo possible types of generic */
   readConfig: <T>(key: string, defaultValue: T) => T;
   /** @todo args type, return signature */

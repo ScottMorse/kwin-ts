@@ -2,6 +2,14 @@ rspack.config.js
 kwin-ts-output/
 .env.local
 
+# temp-delete-me* is a prefix for temporary development files
+# so that references to them alert the developer to undo
+# the usage of temporary development files that won't be checked in.
+# This can be useful if using sensitive information in local files you do
+# not want to accidnetally check in, however still take high security
+# measure for your secrets and do not let files like these linger.
+temp-delete-me*
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output

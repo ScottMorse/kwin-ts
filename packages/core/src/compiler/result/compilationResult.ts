@@ -1,7 +1,8 @@
+import { InputFile } from '../inputFile';
+
 export interface CompilationOutput {
-  sourcePath: string;
   outputPath: string;
-  matchedInput: string;
+  input: InputFile;
 }
 
 export interface CompilationResult {

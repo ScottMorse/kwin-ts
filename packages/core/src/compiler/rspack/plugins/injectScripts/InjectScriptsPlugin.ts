@@ -5,39 +5,33 @@ import {
   Assets,
   RspackPluginInstance,
 } from '@rspack/core';
-import { transformSync } from '@babel/core';
 import fs from 'fs';
 import path from 'path';
+import { rspackLogger } from '../../logger';
+import { transformSourceCodeWithBabel } from '@kwin-ts/core/compiler/babel';
 
 const wrapScriptSrc = (src: string, name: string) => `
-/********* Injected by kwin-ts - ${name}.js) *********/
+
+/******* START ${name}.js - Injected by kwin-ts *******/
 ${src}
-/***** End injected kwin-ts script - ${name}.js ******/
+/********* END ${name}.js - Injected by kwin-ts *******/
+
 `;
-
-const optimizeScriptSrc = (src: string) => {
-  const result = transformSync(src, {
-    plugins: [
-      '@babel/preset-env',
-      {
-        targets: { node: 'current' },
-      },
-    ],
-  });
-
-  if (!result) {
-    throw new Error('Failed to optimize script');
-  }
-
-  return result.code;
-};
 
 export interface InjectScriptsPluginOptions {
   optimize?: boolean;
 }
 
 export class InjectScriptsPlugin implements RspackPluginInstance {
-  constructor(private options: InjectScriptsPluginOptions) {}
+  constructor(
+    private options: InjectScriptsPluginOptions,
+    private logger = rspackLogger
+  ) {
+    this.logger = logger.createChild({
+      ...logger.options,
+      name: 'InjectScriptsPlugin',
+    });
+  }
 
   apply(compiler: Compiler) {
     compiler.hooks.thisCompilation.tap('Replace', (compilation) => {
@@ -48,14 +42,22 @@ export class InjectScriptsPlugin implements RspackPluginInstance {
         },
         (assets: Assets) => {
           for (const [name, asset] of Object.entries(assets)) {
-            compilation.updateAsset(
-              name,
-              new sources.RawSource(
-                this.getScriptSrc('beforeAll') +
-                  asset.source() +
-                  this.getScriptSrc('afterAll')
-              )
+            this.logger.debug(
+              `Injecting raw kwin-ts scripts into asset: ${name}`
             );
+
+            let newSourceCode = this.getScriptSrc('beforeAll') + asset.source();
+
+            this.logger.debug(
+              `Applying additional babel transform to script: ${name} (full optimization: ${!!this
+                .options.optimize})`
+            );
+            newSourceCode = transformSourceCodeWithBabel(
+              newSourceCode,
+              this.options.optimize
+            );
+
+            compilation.updateAsset(name, new sources.RawSource(newSourceCode));
           }
         }
       );
@@ -71,7 +73,7 @@ export class InjectScriptsPlugin implements RspackPluginInstance {
     if (!this.options.optimize) {
       return wrapScriptSrc(src, name);
     } else {
-      return optimizeScriptSrc(src);
+      return src;
     }
   }
 }

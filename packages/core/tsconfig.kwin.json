@@ -1,0 +1,4 @@
+{
+  "extends": "../../config/kwin/tsconfig.json",
+  "include": ["src/**/*.runtime.ts"]
+}
