@@ -1,10 +1,10 @@
-import { deepFreeze } from '@kwin-ts/core/internal/object/freeze';
-import { Override } from '@kwin-ts/core/internal/types';
-import { VerbosityLevel } from '@kwin-ts/core/logger';
-import { mergeWith } from 'lodash';
-import { Alias } from 'node-polyfill-webpack-plugin';
+import { deepFreeze } from "@kwin-ts/core/internal/object/freeze";
+import { Override } from "@kwin-ts/core/internal/types";
+import { VerbosityLevel } from "@kwin-ts/core/logger";
+import { mergeWith } from "lodash";
+import { Alias } from "node-polyfill-webpack-plugin";
 
-export type NodePolyfillOption = Exclude<Alias, 'console'>;
+export type NodePolyfillOption = Exclude<Alias, "console">;
 
 /**
  * Variables that can be accessed via `process.env` in
@@ -27,7 +27,7 @@ export interface CreateCompilerOptions {
    */
   outputDirectory?: string;
   /** If "auto", will determine based on NODE_ENV, disabling for NODE_ENV="development" */
-  optimize?: boolean | 'auto';
+  optimize?: boolean | "auto";
   /** Default true, polyfill any imports of node libraries */
   nodePolyfills?:
     | boolean
@@ -61,22 +61,22 @@ export type CompilerOptions = Override<
 export const DEFAULT_COMPILER_OPTIONS: CompilerOptions = deepFreeze({
   inputs: [],
   outputDirectory:
-    process.env.KWIN_TS_DEFAULT_OUTPUT_PATH ?? './kwin-ts-output',
+    process.env.KWIN_TS_DEFAULT_OUTPUT_PATH ?? "./kwin-ts-output",
   inputBaseDirectory: process.env.KWIN_TS_INPUT_BASE_DIRECTORY ?? process.cwd(),
-  optimize: process.env.NODE_ENV !== 'development',
+  optimize: process.env.NODE_ENV !== "development",
   nodePolyfills: true,
   verbosity:
     (process.env.KWIN_TS_COMPILER_VERBOSITY_LEVEL as VerbosityLevel) ??
-    'default',
+    "default",
   rawLogFormatting:
-    process.env.KWIN_TS_RAW_LOG_FORMATTING?.toString() === 'true' || false,
+    process.env.KWIN_TS_RAW_LOG_FORMATTING?.toString() === "true" || false,
   environmentVariables: JSON.parse(
-    process.env.KWIN_TS_RUNTIME_ENVIRONMENT_VARIABLES ?? '{}'
+    process.env.KWIN_TS_RUNTIME_ENVIRONMENT_VARIABLES ?? "{}",
   ),
 });
 
 export const finalizeCompilerOptions = (
-  options: CreateCompilerOptions
+  options: CreateCompilerOptions,
 ): CompilerOptions =>
   mergeWith(
     {},
@@ -84,7 +84,7 @@ export const finalizeCompilerOptions = (
     {
       ...options,
       optimize:
-        options.optimize === 'auto'
+        options.optimize === "auto"
           ? DEFAULT_COMPILER_OPTIONS.optimize
           : options.optimize,
     },
@@ -92,5 +92,5 @@ export const finalizeCompilerOptions = (
       if (Array.isArray(objValue) || Array.isArray(srcValue)) {
         return srcValue;
       }
-    }
+    },
   );

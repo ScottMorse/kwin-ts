@@ -4,16 +4,10 @@
   "include": [],
   "references": [
     {
-      "path": "./tsconfig.package.json"
+      "path": "./tsconfig.src.json"
     },
     {
-      "path": "./tsconfig.test.json"
-    },
-    {
-      "path": "./tsconfig.kwin.json"
-    },
-    {
-      "path": "./tsconfig.rspack.json"
+      "path": "./tsconfig.kwin-runtime.json"
     }
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "name": "@kwin-ts/core",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

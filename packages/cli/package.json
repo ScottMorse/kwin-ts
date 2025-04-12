@@ -1,0 +1,6 @@
+{
+  "name": "@kwin-ts/cli",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}
