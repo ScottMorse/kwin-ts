@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import { format } from 'util';
+import { format } from "util";
 
 const rawPrint = print;
 
@@ -26,7 +25,7 @@ if (!process.env.__KWIN_TS_RUNTIME_RAW_FORMATTING) {
         ? key
         : never;
     }[keyof Console]
-  >[] = ['debug', 'error', 'info', 'log', 'warn', 'trace'];
+  >[] = ["debug", "error", "info", "log", "warn", "trace"];
 
   for (const method of consoleMethods) {
     console[method] = (...args: unknown[]) =>

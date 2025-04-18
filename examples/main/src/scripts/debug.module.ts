@@ -1,3 +1,3 @@
-export const importedFunction = () => print('importedFunction called yay');
+export const importedFunction = () => print("importedFunction called yay");
 
-print('hi i printed in the main scope of an imported module');
+print("hi i printed in the main scope of an imported module");

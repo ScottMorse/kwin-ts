@@ -1,7 +1,7 @@
 {
   "extends": "../base/tsconfig.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["bun"],
     "outDir": "./dist",
     "noEmit": false,
     "target": "ES6",

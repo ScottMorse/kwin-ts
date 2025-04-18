@@ -7,11 +7,11 @@ export type PrivateMapKey<C extends BasePrivateMapConfig> = keyof C;
 
 export type PrivateMapValue<
   C extends BasePrivateMapConfig,
-  K extends keyof C = keyof C
+  K extends keyof C = keyof C,
 > = C[K];
 
 export interface PrivateMap<
-  C extends BasePrivateMapConfig = BasePrivateMapConfig
+  C extends BasePrivateMapConfig = BasePrivateMapConfig,
 > {
   set<K extends PrivateMapKey<C>>(key: K, value: PrivateMapValue<C, K>): void;
   get<K extends PrivateMapKey<C>>(key: K): PrivateMapValue<C, K>;
@@ -26,9 +26,9 @@ export interface PrivateMap<
     callbackfn: <K extends PrivateMapKey<C>>(
       value: unknown,
       key: PrivateMapKey<C>,
-      map: PrivateMap<C>
+      map: PrivateMap<C>,
     ) => void,
-    thisArg?: unknown
+    thisArg?: unknown,
   ): void;
 }
 
@@ -41,14 +41,14 @@ export interface PrivateMapFactory<C extends BasePrivateMapConfig> {
 }
 
 export interface CreatePrivateMapFactoryOptions<
-  C extends BasePrivateMapConfig
+  C extends BasePrivateMapConfig,
 > {
   defaultInitialValues: C;
 }
 
 const setInternalPrivateMap = <C extends BasePrivateMapConfig>(
   obj: _PrivateMapFactory<C>,
-  options: CreatePrivateMapFactoryOptions<C>
+  options: CreatePrivateMapFactoryOptions<C>,
 ) => {
   const map = new Map(Object.entries(options));
 
@@ -58,7 +58,7 @@ const setInternalPrivateMap = <C extends BasePrivateMapConfig>(
 };
 
 const getInternalPrivateMap = <C extends BasePrivateMapConfig>(
-  obj: _PrivateMapFactory<C>
+  obj: _PrivateMapFactory<C>,
 ) => {
   return INSTANCE_TO_MAP_MAP.get(obj) as PrivateMap<
     CreatePrivateMapFactoryOptions<C>
@@ -74,7 +74,7 @@ class _PrivateMapFactory<C extends BasePrivateMapConfig>
 
   set(obj: object, initialValues: C): PrivateMap<C> {
     const map = new Map<PrivateMapKey<C>, PrivateMapValue<C>>(
-      Object.entries(initialValues)
+      Object.entries(initialValues),
     );
 
     INSTANCE_TO_MAP_MAP.set(obj, map);
@@ -85,11 +85,11 @@ class _PrivateMapFactory<C extends BasePrivateMapConfig>
   get(obj: object): PrivateMap<C> {
     return (
       INSTANCE_TO_MAP_MAP.get(obj) ??
-      this.set(obj, getInternalPrivateMap(this).get('defaultInitialValues'))
+      this.set(obj, getInternalPrivateMap(this).get("defaultInitialValues"))
     );
   }
 }
 
 export const createPrivateMapFactory = <C extends BasePrivateMapConfig>(
-  options: CreatePrivateMapFactoryOptions<C>
+  options: CreatePrivateMapFactoryOptions<C>,
 ) => new _PrivateMapFactory<C>(options);

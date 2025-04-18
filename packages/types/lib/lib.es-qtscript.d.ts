@@ -1,4 +1,3 @@
-
 /// <reference no-default-lib="true"/>
 
 /// <reference types="./lib.es5-modified.d.ts" />

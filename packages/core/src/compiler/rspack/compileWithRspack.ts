@@ -1,5 +1,4 @@
 import path from "path";
-import fs from "fs";
 import { FindInputFilesResult } from "../inputFile/findInputFiles";
 import {
   rspack,
@@ -13,9 +12,9 @@ import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 import { CompilerOptions } from "../options/compilerOptions";
 import { InjectScriptsPlugin } from "./plugins/injectScripts/InjectScriptsPlugin";
 import { CompilationResult } from "../result/compilationResult";
-import { createRemotePromise } from "@kwin-ts/core/internal/async/promise";
+import { createRemotePromise } from "../../internal/async/promise";
 import { rspackLogger } from "./logger";
-import { KWIN_TS_RUNTIME_PATH } from "@kwin-ts/core/runtime";
+import { KWIN_TS_RUNTIME_PATH } from "../../runtime";
 
 const resolveNodePolyfillPlugins = (
   option: CompilerOptions["nodePolyfills"],
@@ -25,7 +24,7 @@ const resolveNodePolyfillPlugins = (
     return [
       new NodePolyfillPlugin({
         onlyAliases: option,
-      }) as any,
+      }) as never,
     ];
   }
   return option

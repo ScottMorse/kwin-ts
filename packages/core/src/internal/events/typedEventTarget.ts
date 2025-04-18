@@ -1,6 +1,6 @@
 export type TypedEvent<
   TypeName extends string = string,
-  ExtraProperties extends object = object
+  ExtraProperties extends object = object,
 > = Event & {
   type: TypeName;
 } & ExtraProperties;
@@ -9,19 +9,17 @@ export const TypedEvent = Event as unknown as {
   prototype: TypedEvent;
   new <TypeName extends string = string>(
     type: TypeName,
-    options?: EventInit
+    options?: EventInit,
   ): TypedEvent<TypeName>;
 };
 
-type ExtractExtraProperties<E> = E extends TypedEvent<
-  string,
-  infer ExtraProperties
->
-  ? Omit<ExtraProperties, 'type'>
-  : undefined;
+type ExtractExtraProperties<E> =
+  E extends TypedEvent<string, infer ExtraProperties>
+    ? Omit<ExtraProperties, "type">
+    : undefined;
 
 export const createTypedEventFactory =
-  <E extends TypedEvent = TypedEvent>(type: E['type']) =>
+  <E extends TypedEvent = TypedEvent>(type: E["type"]) =>
   (properties: ExtractExtraProperties<E>, options?: EventInit) => {
     const event = new TypedEvent(type, options) as E;
     for (const key in properties) {
@@ -35,24 +33,24 @@ export type BaseEventConfig = { [key: string]: TypedEvent };
 
 type EventFromName<
   E extends keyof EventConfig,
-  EventConfig extends BaseEventConfig
+  EventConfig extends BaseEventConfig,
 > = EventConfig[E];
 
 export interface TypedEventTarget<
-  EventConfig extends BaseEventConfig = BaseEventConfig
+  EventConfig extends BaseEventConfig = BaseEventConfig,
 > {
   addEventListener<EventName extends keyof EventConfig>(
     event: EventName,
-    listener: (event: EventFromName<EventName, EventConfig>) => any
+    listener: (event: EventFromName<EventName, EventConfig>) => any,
   ): void;
 
   removeEventListener<EventName extends keyof EventConfig>(
     event: EventName,
-    listener: (event: EventFromName<EventName, EventConfig>) => any
+    listener: (event: EventFromName<EventName, EventConfig>) => any,
   ): void;
 
   dispatchEvent<EventName extends keyof EventConfig>(
-    event: EventFromName<EventName, EventConfig>
+    event: EventFromName<EventName, EventConfig>,
   ): boolean;
 }
 
@@ -96,6 +94,6 @@ export interface TypedEventTarget<
 export const TypedEventTarget = EventTarget as unknown as {
   prototype: TypedEventTarget;
   new <
-    EventConfig extends BaseEventConfig = BaseEventConfig
+    EventConfig extends BaseEventConfig = BaseEventConfig,
   >(): TypedEventTarget<EventConfig>;
 };

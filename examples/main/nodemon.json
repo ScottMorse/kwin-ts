@@ -15,6 +15,6 @@
     "../../config"
   ],
   "execMap": {
-    "ts": "(cd ../../ && nx lint example-main || true) & NODE_ENV=development ts-node --project tsconfig.main.json"
+    "ts": "(cd ../../ && nx lint example-main || true) & NODE_ENV=development bun run"
   }
 }

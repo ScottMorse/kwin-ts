@@ -1,5 +1,5 @@
-import isPlainObject from 'lodash/isPlainObject';
-import mapValues from 'lodash/mapValues';
+import isPlainObject from "lodash/isPlainObject";
+import mapValues from "lodash/mapValues";
 
 export type Frozen<T> = T extends object ? Readonly<T> : T;
 

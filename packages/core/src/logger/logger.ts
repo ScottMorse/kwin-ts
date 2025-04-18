@@ -1,17 +1,16 @@
-import { TypedEventTarget } from '../internal/events/typedEventTarget';
-import { createPrivateMapFactory } from '../internal/object/map';
-import { getChildren, getParent, setParent } from './child';
-import { LogEventTarget, LoggerEvents } from './events';
-import { LogLevel, PrintableLogLevel } from './level';
-import { _registerLog } from './listen';
-import { CreateLogOptions, Log, LogMessages, createLog } from './log';
+import { TypedEventTarget } from "../internal/events/typedEventTarget";
+import { createPrivateMapFactory } from "../internal/object/map";
+import { getChildren, getParent, setParent } from "./child";
+import { LogEventTarget, LoggerEvents } from "./events";
+import { LogLevel, PrintableLogLevel } from "./level";
+import { _registerLog } from "./listen";
+import { CreateLogOptions, Log, LogMessages, createLog } from "./log";
 import {
   CreateLoggerOptions,
   LoggerOptions,
   createLoggerOptions,
-  resolveOption,
-} from './options';
-import { formatName } from './print';
+} from "./options";
+import { formatName } from "./print";
 
 export type Logger = LogEventTarget & {
   log(level: LogLevel, ...messages: LogMessages): Log;
@@ -26,7 +25,7 @@ export type Logger = LogEventTarget & {
 
 const privateMaps = createPrivateMapFactory({
   defaultInitialValues: {
-    id: '-1',
+    id: "-1",
     isRoot: true,
     options: createLoggerOptions(),
   },
@@ -34,7 +33,7 @@ const privateMaps = createPrivateMapFactory({
 
 const ID_LENGTH = 8;
 
-const RANDOM_MAX = parseInt('9'.repeat(ID_LENGTH));
+const RANDOM_MAX = parseInt("9".repeat(ID_LENGTH));
 
 class _Logger extends TypedEventTarget<LoggerEvents> implements Logger {
   constructor(options: LoggerOptions) {
@@ -42,22 +41,22 @@ class _Logger extends TypedEventTarget<LoggerEvents> implements Logger {
     privateMaps.set(this, {
       id: Math.round(Math.random() * RANDOM_MAX)
         .toString()
-        .padStart(ID_LENGTH, '0'),
+        .padStart(ID_LENGTH, "0"),
       isRoot: true,
       options,
     });
   }
 
   get id() {
-    return privateMaps.get(this).get('id');
+    return privateMaps.get(this).get("id");
   }
 
   get options() {
-    return privateMaps.get(this).get('options');
+    return privateMaps.get(this).get("options");
   }
 
   get name(): string {
-    return formatName(this, () => privateMaps.get(this).get('isRoot'));
+    return formatName(this, () => privateMaps.get(this).get("isRoot"));
   }
 
   log(level: LogLevel, ...messages: LogMessages): Log {
@@ -80,35 +79,34 @@ class _Logger extends TypedEventTarget<LoggerEvents> implements Logger {
 
       return log;
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to log message: ', e);
+      console.error("Failed to log message: ", e);
       return {
         ...logOptions,
-        id: '(error)',
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        id: "(error)",
+
         print: () => {},
       };
     }
   }
 
   debug(...messages: LogMessages) {
-    return this.log('debug', ...messages);
+    return this.log("debug", ...messages);
   }
 
   info(...messages: LogMessages) {
-    return this.log('info', ...messages);
+    return this.log("info", ...messages);
   }
 
   warn(...messages: LogMessages) {
-    return this.log('warn', ...messages);
+    return this.log("warn", ...messages);
   }
 
   error(...messages: LogMessages) {
-    return this.log('error', ...messages);
+    return this.log("error", ...messages);
   }
 
   fatal(...messages: LogMessages) {
-    return this.log('fatal', ...messages);
+    return this.log("fatal", ...messages);
   }
 
   clone() {
@@ -121,7 +119,7 @@ class _Logger extends TypedEventTarget<LoggerEvents> implements Logger {
       setParent(child, clone);
     }
 
-    privateMaps.get(clone).set('id', this.id + '-clone-' + clone.id);
+    privateMaps.get(clone).set("id", this.id + "-clone-" + clone.id);
 
     return clone;
   }
@@ -129,14 +127,14 @@ class _Logger extends TypedEventTarget<LoggerEvents> implements Logger {
   createChild(options?: CreateLoggerOptions) {
     const child = _createLogger({
       ...this.options,
-      name: 'inherit',
-      verbosity: 'inherit',
+      name: "inherit",
+      verbosity: "inherit",
       ...options,
     });
 
     setParent(child, this);
 
-    privateMaps.get(child).set('isRoot', false);
+    privateMaps.get(child).set("isRoot", false);
 
     return child;
   }
@@ -150,20 +148,19 @@ const _createLogger = (options?: CreateLoggerOptions): Logger => {
   try {
     return new _Logger(createLoggerOptions(options));
   } catch (e) {
-    /* eslint-disable no-console */
     console.error(e);
-    console.error('Failed to create logger. Args: ', { options });
+    console.error("Failed to create logger. Args: ", { options });
     return {
       addEventListener: () => undefined,
       removeEventListener: () => undefined,
       dispatchEvent: () => false,
       options: {
-        name: '<kwin-ts: error creating logger>',
-        verbosity: 'default',
+        name: "<kwin-ts: error creating logger>",
+        verbosity: "default",
       },
-      log: console.log as Logger['log'],
-      id: '-1',
-      name: '<kwin-ts: error creating logger>',
+      log: console.log as Logger["log"],
+      id: "-1",
+      name: "<kwin-ts: error creating logger>",
       ...({
         log: console.log,
         debug: console.debug,
@@ -181,7 +178,6 @@ const _createLogger = (options?: CreateLoggerOptions): Logger => {
         return { ...this };
       },
     };
-    /* eslint-enable no-console */
   }
 };
 

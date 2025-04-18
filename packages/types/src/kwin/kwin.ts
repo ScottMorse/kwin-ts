@@ -8,13 +8,13 @@ export interface KWinGlobalMethods {
     path: string,
     iface: string,
     method: string,
-    args: object[]
+    args: object[],
   ) => unknown;
   /** @todo callback type, return signature */
   registerShortcut: (
     name: string,
     description: string,
     key: string,
-    callback: () => unknown
+    callback: () => unknown,
   ) => unknown;
 }

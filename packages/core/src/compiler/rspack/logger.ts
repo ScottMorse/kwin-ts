@@ -1,3 +1,3 @@
-import { compileLogger } from '../logger';
+import { compileLogger } from "../logger";
 
-export const rspackLogger = compileLogger.createChild({ name: 'rspack' });
+export const rspackLogger = compileLogger.createChild({ name: "rspack" });

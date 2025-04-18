@@ -1,2 +1,2 @@
-export * from './compilerOptions';
-export * from './getScriptFiles';
+export * from "./compilerOptions";
+export * from "./getScriptFiles";

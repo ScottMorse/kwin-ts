@@ -1,18 +1,18 @@
-import { transformSync } from '@babel/core';
+import { transformSync } from "@babel/core";
 
 export const transformSourceCodeWithBabel = (
   sourceCode: string,
-  optimize?: boolean
+  optimize?: boolean,
 ) => {
-  const plugins = [require.resolve('./plugins/silence-qml-warnings')];
+  const plugins = [require.resolve("./plugins/silence-qml-warnings")];
 
   if (optimize) {
     plugins.push(
-      'minify-mangle-names',
-      'minify-simplify',
-      'minify-type-constructors',
-      'minify-constant-folding',
-      'minify-dead-code-elimination'
+      "minify-mangle-names",
+      "minify-simplify",
+      "minify-type-constructors",
+      "minify-constant-folding",
+      "minify-dead-code-elimination",
     );
   }
 
@@ -24,7 +24,7 @@ export const transformSourceCodeWithBabel = (
   });
 
   if (!result?.code) {
-    throw new Error('No code output from babel transformSync');
+    throw new Error("No code output from babel transformSync");
   }
 
   return result.code;

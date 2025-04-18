@@ -1,6 +1,6 @@
-export * from './workspace';
-export * from './desktop';
-export * from './window';
-export * from './output';
-export * from './tile';
-export * from './tileManager';
+export type * from "./workspace";
+export type * from "./desktop";
+export type * from "./window";
+export type * from "./output";
+export type * from "./tile";
+export type * from "./tileManager";

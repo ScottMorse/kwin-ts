@@ -1,8 +1,8 @@
-import { LogEvent, createLogEvent, getGlobalEventTarget } from './events';
-import { LogLevel, meetsMinimumLevel } from './level';
-import type { Log } from './log';
-import type { Logger } from './internal/logger';
-import { VerbosityLevel, resolveLogLevel } from './verbosity';
+import { LogEvent, createLogEvent, getGlobalEventTarget } from "./events";
+import { LogLevel, meetsMinimumLevel } from "./level";
+import type { Log } from "./log";
+import type { Logger } from "./internal/logger";
+import { VerbosityLevel, resolveLogLevel } from "./verbosity";
 
 export const _registerLog = (log: Log) => {
   getGlobalEventTarget().dispatchEvent(createLogEvent({ log }));
@@ -31,26 +31,26 @@ export interface ListenToLogsOptions {
 
 const matchesPattern = (
   value: string,
-  pattern: PatternOption | undefined
+  pattern: PatternOption | undefined,
 ): boolean => {
   if (!pattern) return true;
   if (Array.isArray(pattern))
     return pattern.some((p) => matchesPattern(value, p));
-  if (typeof pattern === 'string') return value === pattern;
+  if (typeof pattern === "string") return value === pattern;
   return pattern.test(value);
 };
 
 const matchesLogger = (
   log: Log,
   loggerOrId: Logger | string,
-  includeClones = true
+  includeClones = true,
 ) => {
-  const id = typeof loggerOrId === 'string' ? loggerOrId : loggerOrId.id;
+  const id = typeof loggerOrId === "string" ? loggerOrId : loggerOrId.id;
   if (id === log.meta.logger.id) return true;
   if (includeClones) {
     return (
-      id.startsWith(log.meta.logger.id + '-clone') ||
-      log.meta.logger.id.startsWith(id + '-clone')
+      id.startsWith(log.meta.logger.id + "-clone") ||
+      log.meta.logger.id.startsWith(id + "-clone")
     );
   }
   return false;
@@ -67,7 +67,7 @@ class FilterHandlers {
     return meetsMinimumLevel(log.level, resolveLogLevel(verbosity));
   }
 
-  logger(loggerFilter: LogFilter['logger'], log: Log) {
+  logger(loggerFilter: LogFilter["logger"], log: Log) {
     if (Array.isArray(loggerFilter)) {
       return loggerFilter.some((logger) => matchesLogger(log, logger));
     }
@@ -106,7 +106,7 @@ export const listenToLogs = (options: ListenToLogsOptions): StopFunction => {
       if (
         value !== undefined &&
         value !== null &&
-        key !== 'includeLoggerClones' &&
+        key !== "includeLoggerClones" &&
         !filterHandlers[key as keyof LogFilter]?.(value, log)
       )
         return;
@@ -116,11 +116,11 @@ export const listenToLogs = (options: ListenToLogsOptions): StopFunction => {
   };
 
   const stop = () => {
-    getGlobalEventTarget().removeEventListener('log', onLog);
+    getGlobalEventTarget().removeEventListener("log", onLog);
     options.onStop?.();
   };
 
-  getGlobalEventTarget().addEventListener('log', onLog);
+  getGlobalEventTarget().addEventListener("log", onLog);
 
   return stop;
 };

@@ -1,1 +1,1 @@
-export * from './kwin';
+export type * from "./kwin";

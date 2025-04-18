@@ -2,30 +2,22 @@
   "compileOnSave": false,
   "compilerOptions": {
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "experimentalDecorators": false,
     "importHelpers": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "typeRoots": ["../../node_modules/@types", "../../types"],
     "noEmit": true,
+    "moduleDetection": "force",
     "noImplicitAny": true,
     "target": "ES5",
     "baseUrl": ".",
-    "types": ["node"],
-    "paths": {
-      "@kwin-ts/core": ["../../packages/core/src/index.ts"],
-      "@kwin-ts/core/*": ["../../packages/core/src/*"],
-      "@kwin-ts/types": ["../../packages/types"],
-      "@kwin-ts/types/*": ["../../packages/types/*"]
-    }
-  },
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "types": ["bun"]
   },
   "include": ["./_file.ts"],
   "exclude": ["**/node_modules/**/*", "**/dist/**/*", "**/kwin-ts-output/**/*"]

@@ -10,7 +10,7 @@ import {
   KWinGlobalMethods,
   QtScriptConsole,
   KWinTsRuntime,
-} from '../src';
+} from "../src";
 
 declare type Console = QtScriptConsole;
 
@@ -22,10 +22,10 @@ declare global {
   var workspace: Workspace;
   var options: Options;
 
-  var print: KWinGlobalMethods['print'];
-  var registerShortcut: KWinGlobalMethods['registerShortcut'];
-  var readConfig: KWinGlobalMethods['readConfig'];
-  var callDBus: KWinGlobalMethods['callDBus'];
+  var print: KWinGlobalMethods["print"];
+  var registerShortcut: KWinGlobalMethods["registerShortcut"];
+  var readConfig: KWinGlobalMethods["readConfig"];
+  var callDBus: KWinGlobalMethods["callDBus"];
 
   var kwinTs: KWinTsRuntime;
 }

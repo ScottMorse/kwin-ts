@@ -1,4 +1,4 @@
-import { defaultLogger } from '@kwin-ts/core/logger';
+import { defaultLogger } from "../../logger";
 
 export interface RemotePromise<T> extends Promise<T> {
   resolve(value: T): void;
@@ -9,9 +9,9 @@ export interface RemotePromise<T> extends Promise<T> {
 export const createRemotePromise = <T = any>() => {
   const callbackState = {
     resolve: (value: T) =>
-      defaultLogger.warn(new Error('No resolve set'), { value }),
+      defaultLogger.warn(new Error("No resolve set"), { value }),
     reject: (reason: unknown) =>
-      defaultLogger.warn(new Error('No reject set'), { reason }),
+      defaultLogger.warn(new Error("No reject set"), { reason }),
   };
 
   const promise = new Promise<T>((resolve, reject) => {

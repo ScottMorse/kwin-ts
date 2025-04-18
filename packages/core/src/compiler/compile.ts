@@ -1,16 +1,16 @@
-import { runKwinTs } from '../internal/run';
-import { defaultLogger } from '../logger';
-import { findInputFiles } from './inputFile';
-import { compileLogger } from './logger';
+import { runKwinTs } from "../internal/run";
+import { defaultLogger } from "../logger";
+import { findInputFiles } from "./inputFile";
+import { compileLogger } from "./logger";
 import {
   CreateCompilerOptions,
   finalizeCompilerOptions,
-} from './options/compilerOptions';
-import { CompilationResult } from './result/compilationResult';
-import { compileWithRspack } from './rspack/compileWithRspack';
+} from "./options/compilerOptions";
+import { CompilationResult } from "./result/compilationResult";
+import { compileWithRspack } from "./rspack/compileWithRspack";
 
 export const compile = async (
-  options: CreateCompilerOptions
+  options: CreateCompilerOptions,
 ): Promise<CompilationResult> => {
   const result = await runKwinTs(async () => {
     try {
@@ -23,17 +23,17 @@ export const compile = async (
         logger.debug(`Option: ${key} = ${JSON.stringify(value, null, 2)}`);
       }
 
-      logger.debug('Finding input files');
+      logger.debug("Finding input files");
       const inputFiles = findInputFiles(
         finalOptions.inputBaseDirectory,
-        ...finalOptions.inputs
+        ...finalOptions.inputs,
       );
 
       if (!inputFiles.entry.length) {
         logger.error(
           `No entry scripts found for inputs ${JSON.stringify(
-            finalOptions.inputs
-          )} in input base directory ${finalOptions.inputBaseDirectory}`
+            finalOptions.inputs,
+          )} in input base directory ${finalOptions.inputBaseDirectory}`,
         );
         return {
           outputs: [],
@@ -48,25 +48,25 @@ export const compile = async (
             (key) =>
               `${key}: ${inputFiles[
                 key as keyof typeof inputFiles
-              ].length.toLocaleString()}`
+              ].length.toLocaleString()}`,
           )
-          .join(', ')}):`
+          .join(", ")}):`,
       );
 
-      logger.info('Compiling');
+      logger.info("Compiling");
       const result = await compileWithRspack(
         finalizeCompilerOptions(options),
-        inputFiles
+        inputFiles,
       );
-      logger.debug('Result', result);
+      logger.debug("Result", result);
       if (!result.success) {
         throw result;
       }
-      logger.info('Compiled successfully');
+      logger.info("Compiled successfully");
 
       return result;
     } catch (error) {
-      defaultLogger.error('Failed to compile', error);
+      defaultLogger.error("Failed to compile", error);
       return {
         outputs: [],
         success: false,
@@ -78,6 +78,6 @@ export const compile = async (
     result ?? {
       outputs: [],
       success: false,
-    }
+    },
   );
 };

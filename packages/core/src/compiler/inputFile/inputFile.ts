@@ -1,18 +1,18 @@
-import { freeze } from '@kwin-ts/core/internal/object/freeze';
+import { freeze } from "../../internal/object/freeze";
 
 const INPUT_FILE_TYPE_META = {
   entry: {
-    fileSubExtension: '',
+    fileSubExtension: "",
   },
   module: {
-    fileSubExtension: 'module',
+    fileSubExtension: "module",
   },
 } as const;
 
 export type InputFileType = keyof typeof INPUT_FILE_TYPE_META;
 
 export const INPUT_FILE_TYPES = freeze(
-  Object.keys(INPUT_FILE_TYPE_META) as InputFileType[]
+  Object.keys(INPUT_FILE_TYPE_META) as InputFileType[],
 );
 
 const _matchFileNameType = (fileName: string, type: InputFileType): boolean => {
@@ -20,7 +20,7 @@ const _matchFileNameType = (fileName: string, type: InputFileType): boolean => {
   return fileSubExtension
     ? fileName.endsWith(`.${fileSubExtension}.ts`)
     : !(Object.keys(INPUT_FILE_TYPE_META) as InputFileType[]).some(
-        (t) => t !== type && _matchFileNameType(fileName, t)
+        (t) => t !== type && _matchFileNameType(fileName, t),
       );
 };
 
@@ -29,12 +29,12 @@ export const matchFileNameType = (fileName: string, type: InputFileType) =>
 
 export const extractFileNameType = (fileName: string): InputFileType => {
   for (const type of Object.keys(INPUT_FILE_TYPE_META) as InputFileType[]) {
-    if (type === 'entry') continue;
+    if (type === "entry") continue;
 
     if (matchFileNameType(fileName, type)) {
       return type;
     }
   }
 
-  return 'entry';
+  return "entry";
 };

@@ -4,11 +4,11 @@ import {
   sources,
   Assets,
   RspackPluginInstance,
-} from '@rspack/core';
-import fs from 'fs';
-import path from 'path';
-import { rspackLogger } from '../../logger';
-import { transformSourceCodeWithBabel } from '@kwin-ts/core/compiler/babel';
+} from "@rspack/core";
+import fs from "fs";
+import path from "path";
+import { rspackLogger } from "../../logger";
+import { transformSourceCodeWithBabel } from "../../../../compiler/babel";
 
 const wrapScriptSrc = (src: string, name: string) => `
 
@@ -25,41 +25,41 @@ export interface InjectScriptsPluginOptions {
 export class InjectScriptsPlugin implements RspackPluginInstance {
   constructor(
     private options: InjectScriptsPluginOptions,
-    private logger = rspackLogger
+    private logger = rspackLogger,
   ) {
     this.logger = logger.createChild({
       ...logger.options,
-      name: 'InjectScriptsPlugin',
+      name: "InjectScriptsPlugin",
     });
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks.thisCompilation.tap('Replace', (compilation) => {
+    compiler.hooks.thisCompilation.tap("Replace", (compilation) => {
       compilation.hooks.processAssets.tap(
         {
-          name: 'GlobalThisPlugin',
+          name: "GlobalThisPlugin",
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
         },
         (assets: Assets) => {
           for (const [name, asset] of Object.entries(assets)) {
             this.logger.debug(
-              `Injecting raw kwin-ts scripts into asset: ${name}`
+              `Injecting raw kwin-ts scripts into asset: ${name}`,
             );
 
-            let newSourceCode = this.getScriptSrc('beforeAll') + asset.source();
+            let newSourceCode = this.getScriptSrc("beforeAll") + asset.source();
 
             this.logger.debug(
               `Applying additional babel transform to script: ${name} (full optimization: ${!!this
-                .options.optimize})`
+                .options.optimize})`,
             );
             newSourceCode = transformSourceCodeWithBabel(
               newSourceCode,
-              this.options.optimize
+              this.options.optimize,
             );
 
             compilation.updateAsset(name, new sources.RawSource(newSourceCode));
           }
-        }
+        },
       );
     });
   }
@@ -67,7 +67,7 @@ export class InjectScriptsPlugin implements RspackPluginInstance {
   private getScriptSrc(name: string) {
     const src = fs.readFileSync(
       path.join(__dirname, `./scripts/${name}.js`),
-      'utf-8'
+      "utf-8",
     );
 
     if (!this.options.optimize) {

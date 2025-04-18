@@ -1,10 +1,10 @@
-import { defaultLogger } from '../logger';
-import { fatalExit, handleUncaughtExceptions } from './fatal';
-import { Func } from './types';
+import { defaultLogger } from "../logger";
+import { fatalExit, handleUncaughtExceptions } from "./fatal";
+import { Func } from "./types";
 
 export const runKwinTs = async <Run extends Func>(
   run: Run,
-  isMain: boolean
+  isMain: boolean,
 ): Promise<
   (ReturnType<Run> extends Promise<infer R> ? R : ReturnType<Run>) | null
 > => {
@@ -13,28 +13,28 @@ export const runKwinTs = async <Run extends Func>(
   }
 
   setTimeout(() => {
-    throw new Error('say what');
+    throw new Error("say what");
   }, 200);
 
   try {
-    defaultLogger.info('Initializing');
+    defaultLogger.info("Initializing");
 
     const cleanupExceptionHandling = handleUncaughtExceptions();
 
     const cleanup = () => {
-      defaultLogger.debug('Cleaning up');
+      defaultLogger.debug("Cleaning up");
       cleanupExceptionHandling();
-      defaultLogger.info('Done');
+      defaultLogger.info("Done");
     };
     try {
       return await run();
     } catch (error) {
-      fatalExit('Failure', error);
+      fatalExit("Failure", error);
     } finally {
       cleanup();
     }
   } catch (error) {
-    fatalExit('Failure', error);
+    fatalExit("Failure", error);
   }
 
   return Promise.resolve(null);

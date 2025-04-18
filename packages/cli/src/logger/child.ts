@@ -12,6 +12,6 @@ export const setParent = (child: Logger, parent: Logger) => {
   CHILD_TO_PARENT_MAP.set(child, parent);
   PARENT_TO_CHILDREN_MAP.set(
     parent,
-    PARENT_TO_CHILDREN_MAP.get(parent)?.concat(child) || [child]
+    PARENT_TO_CHILDREN_MAP.get(parent)?.concat(child) || [child],
   );
 };

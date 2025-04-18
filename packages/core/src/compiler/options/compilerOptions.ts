@@ -1,6 +1,6 @@
-import { deepFreeze } from "@kwin-ts/core/internal/object/freeze";
-import { Override } from "@kwin-ts/core/internal/types";
-import { VerbosityLevel } from "@kwin-ts/core/logger";
+import { deepFreeze } from "../../internal/object/freeze";
+import { Override } from "../../internal/types";
+import { VerbosityLevel } from "../../logger";
 import { mergeWith } from "lodash";
 import { Alias } from "node-polyfill-webpack-plugin";
 

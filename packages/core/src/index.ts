@@ -1,8 +1,8 @@
-export { CreateCompilerOptions } from './compiler/options/compilerOptions';
+export type { CreateCompilerOptions } from "./compiler/options/compilerOptions";
 export {
   setLoggingDefaults,
-  DefaultLoggingOptions,
-  Log,
+  type DefaultLoggingOptions,
+  type Log,
   listenToLogs,
-} from './logger';
-export { compile } from './compiler';
+} from "./logger";
+export { compile } from "./compiler";

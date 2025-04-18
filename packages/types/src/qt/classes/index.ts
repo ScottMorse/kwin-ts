@@ -1,5 +1,5 @@
-export * from './qrect';
-export * from './qpoint';
-export * from './qsize';
-export * from './timer';
-export * from './edge';
+export type * from "./qrect";
+export type * from "./qpoint";
+export type * from "./qsize";
+export type * from "./timer";
+export * from "./edge";

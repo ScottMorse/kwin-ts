@@ -6,9 +6,9 @@ export interface RemotePromise<T> extends Promise<T> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createRemotePromise = <T = any>() => {
   const callbackState = {
-    resolve: (value: T) => console.warn(new Error('No resolve set'), { value }),
+    resolve: (value: T) => console.warn(new Error("No resolve set"), { value }),
     reject: (reason: unknown) =>
-      console.warn(new Error('No reject set'), { reason }),
+      console.warn(new Error("No reject set"), { reason }),
   };
 
   const promise = new Promise<T>((resolve, reject) => {

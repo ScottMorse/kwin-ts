@@ -1,2 +1,2 @@
-export * from './findInputFiles';
-export * from './inputFile';
+export * from "./findInputFiles";
+export * from "./inputFile";

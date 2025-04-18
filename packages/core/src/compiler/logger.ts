@@ -1,3 +1,3 @@
-import { createLogger } from '@kwin-ts/core/logger';
+import { createLogger } from "../logger";
 
-export const compileLogger = createLogger({ name: 'compile' });
+export const compileLogger = createLogger({ name: "compile" });

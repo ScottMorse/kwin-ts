@@ -1,1 +1,1 @@
-export * from './console';
+export type * from "./console";

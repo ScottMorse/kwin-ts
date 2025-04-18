@@ -1,2 +1,2 @@
-export * from './classes/';
-export * from './qtScript';
+export * from "./classes/";
+export type * from "./qtScript";

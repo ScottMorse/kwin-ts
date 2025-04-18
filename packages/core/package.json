@@ -1,5 +1,13 @@
 {
   "name": "@kwin-ts/core",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./compiler": "./src/compiler/index.ts",
+    "./internal": "./src/internal/index.ts",
+    "./logger": "./src/logger/index.ts",
+    "./runtime": "./src/runtime/index.ts"
+  },
   "scripts": {
     "type-check": "tsc --noEmit"
   }
