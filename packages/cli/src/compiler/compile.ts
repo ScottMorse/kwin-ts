@@ -1,5 +1,5 @@
-import { defaultLogger } from "../internal/logger";
-import { compileLogger } from "./internal/logger";
+import { defaultLogger } from "@kwin-ts/core/logger";
+import { compileLogger } from "./logger";
 import {
   CreateCompilerOptions,
   finalizeCompilerOptions,

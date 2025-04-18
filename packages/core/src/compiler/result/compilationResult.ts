@@ -8,4 +8,5 @@ export interface CompilationOutput {
 export interface CompilationResult {
   outputs: CompilationOutput[];
   success: boolean;
+  error?: Error;
 }

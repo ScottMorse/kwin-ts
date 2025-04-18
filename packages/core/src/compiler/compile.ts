@@ -58,10 +58,10 @@ export const compile = async (
         finalizeCompilerOptions(options),
         inputFiles,
       );
-      logger.debug("Result", result);
       if (!result.success) {
-        throw result;
+        throw result.error
       }
+      logger.debug("Result", JSON.stringify(result, null, 2));
       logger.info("Compiled successfully");
 
       return result;

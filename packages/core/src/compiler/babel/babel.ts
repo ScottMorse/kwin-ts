@@ -4,7 +4,7 @@ export const transformSourceCodeWithBabel = (
   sourceCode: string,
   optimize?: boolean,
 ) => {
-  const plugins = [require.resolve("./plugins/silence-qml-warnings")];
+  const plugins = [];
 
   if (optimize) {
     plugins.push(
@@ -15,6 +15,8 @@ export const transformSourceCodeWithBabel = (
       "minify-dead-code-elimination",
     );
   }
+
+  plugins.push(require.resolve("./plugins/silence-qml-warnings"));
 
   const result = transformSync(sourceCode, {
     plugins,

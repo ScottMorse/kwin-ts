@@ -7,6 +7,7 @@ import {
   EnvironmentPlugin,
   DefinePlugin,
   SwcLoaderOptions,
+  ProvidePlugin,
 } from "@rspack/core";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 import { CompilerOptions } from "../options/compilerOptions";
@@ -64,7 +65,10 @@ export const compileWithRspack = async (
 
   const plugins: RspackPluginInstance[] = [
     new EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV,
+      NODE_ENV: process.env.NODE_ENV ?? "production",
+    }),
+    new ProvidePlugin({
+      process: "process",
     }),
     new DefinePlugin(
       Object.entries({
@@ -91,7 +95,9 @@ export const compileWithRspack = async (
     ),
   );
 
-  const mode = options.optimize ? "production" : "development";
+  /** @todo development mode just will not compile valid code (for loops may use never-defined vars), very difficult to debug */
+  // const mode = options.optimize ? "production" : "development";
+  const mode = "production";
   logger.info("Using mode: " + mode);
 
   const swcLoaderOptions: SwcLoaderOptions = {};
@@ -104,6 +110,10 @@ export const compileWithRspack = async (
       filename: "[name].js",
       path: defaultOutputPath,
       clean: true,
+    },
+    optimization: {
+      minimize: options.optimize,
+      mangleExports: options.optimize,
     },
     resolve: {
       extensions: [".js", ".ts"],
@@ -148,11 +158,17 @@ export const compileWithRspack = async (
       }),
     );
 
-    if (err) {
-      logger.error(err);
+    if (stats?.hasWarnings()) {
+      stats?.compilation.warnings.forEach((warning) => logger.warn(warning));
+    }
+
+    if (err || stats?.hasErrors()) {
+      if (err) logger.error(err);
+      stats?.compilation.errors.forEach((error) => logger.error(error));
       remotePromise.resolve({
         outputs,
         success: false,
+        error: err ?? new Error("Rspack compilation completed with errors"),
       });
       return;
     }

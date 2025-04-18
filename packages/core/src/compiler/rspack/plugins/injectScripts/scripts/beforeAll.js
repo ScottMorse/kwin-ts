@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * This script is injected before all other scripts in the compilation process
  * by kwin-ts.

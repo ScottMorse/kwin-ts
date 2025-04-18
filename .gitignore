@@ -17,6 +17,8 @@ dist
 tmp
 /out-tsc
 
+*ignore-me*
+
 # dependencies
 node_modules
 

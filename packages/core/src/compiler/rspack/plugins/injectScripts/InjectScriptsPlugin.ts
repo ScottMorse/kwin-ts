@@ -52,6 +52,7 @@ export class InjectScriptsPlugin implements RspackPluginInstance {
               `Applying additional babel transform to script: ${name} (full optimization: ${!!this
                 .options.optimize})`,
             );
+
             newSourceCode = transformSourceCodeWithBabel(
               newSourceCode,
               this.options.optimize,

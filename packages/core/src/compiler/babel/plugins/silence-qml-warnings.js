@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = () => {
   return {
     visitor: {
@@ -10,7 +12,7 @@ module.exports = () => {
         // but otherwise unavoidable warnings that occur naturally
         // due to the compilation process.
         for (const binding of Object.values(path.scope.bindings)) {
-          if (binding.kind === 'var') {
+          if (binding.kind === "var") {
             binding.scope?.push?.({ id: binding.identifier });
           }
         }

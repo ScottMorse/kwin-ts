@@ -1,4 +1,4 @@
-import { format } from "util";
+import format from "format-util";
 
 const rawPrint = print;
 
@@ -17,7 +17,8 @@ const rawConsole: Console = {
 };
 
 if (!process.env.__KWIN_TS_RUNTIME_RAW_FORMATTING) {
-  globalThis.print = (...args: unknown[]) => rawPrint(format(...args));
+  globalThis.print = (...args: unknown[]) =>
+    rawPrint(format(...(args as [string, ...unknown[]])));
 
   const consoleMethods: NonNullable<
     {
@@ -27,10 +28,10 @@ if (!process.env.__KWIN_TS_RUNTIME_RAW_FORMATTING) {
     }[keyof Console]
   >[] = ["debug", "error", "info", "log", "warn", "trace"];
 
-  for (const method of consoleMethods) {
+  consoleMethods.forEach((method) => {
     console[method] = (...args: unknown[]) =>
-      rawConsole[method](format(...args));
-  }
+      rawConsole[method](format(...(args as [string, ...unknown[]])));
+  });
 }
 
 globalThis.kwinTs = {

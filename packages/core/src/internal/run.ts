@@ -12,10 +12,6 @@ export const runKwinTs = async <Run extends Func>(
     return run();
   }
 
-  setTimeout(() => {
-    throw new Error("say what");
-  }, 200);
-
   try {
     defaultLogger.info("Initializing");
 
