@@ -1,6 +1,6 @@
-import { QPoint, QRect, QSize } from "../qt";
-import { Output } from "./output";
-import { Tile } from "./tile";
+import type { QPoint, QRect, QSize } from "../qt";
+import type { Output } from "./output";
+import type { Tile } from "./tile";
 
 export interface KWindow {
   bufferGeometry: QRect;

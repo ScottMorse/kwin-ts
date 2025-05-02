@@ -1,5 +1,5 @@
 import { selectGlobalLoggerOption, setLoggingDefaults } from "./global";
-import { LogLevel } from "./level";
+import type { LogLevel } from "./level";
 
 const VERBOSITY_ALIASES = {
   verbose: "debug",

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import format from "format-util";
 
 const rawPrint = print;

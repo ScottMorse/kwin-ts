@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { importedFunction } from "./debug.module";
 
 const log = (key: keyof typeof globalThis) =>

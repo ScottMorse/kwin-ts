@@ -1,5 +1,15 @@
 import { freeze } from "../../internal/object/freeze";
 
+export interface InputFile {
+  type: InputFileType;
+  name: string;
+  nameWithExt: string;
+  ext: string;
+  relativePath: string;
+  absolutePath: string;
+  inputPatternMatch?: string;
+}
+
 const INPUT_FILE_TYPE_META = {
   entry: {
     fileSubExtension: "",

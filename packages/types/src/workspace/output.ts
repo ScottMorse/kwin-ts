@@ -1,4 +1,4 @@
-import { QRect } from "../qt";
+import type { QRect } from "../qt";
 
 /** Corresponds to an output device, such as a monitor */
 export interface Output {

@@ -1,5 +1,5 @@
-import { Edge, QRect } from "../qt";
-import { KWindow } from "./window";
+import type { Edge, QRect } from "../qt";
+import type { KWindow } from "./window";
 
 export interface Tile {
   /** Geometry relative to rootTile */

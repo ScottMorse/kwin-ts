@@ -1,5 +1,6 @@
 export type Override<T, U> = Omit<T, keyof U> & U;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Func<T = any[], R = any> = T extends any[]
   ? (...args: T) => R
   : never;

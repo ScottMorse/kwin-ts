@@ -1,25 +1,22 @@
 import path from "path";
-import { FindInputFilesResult } from "../inputFile/findInputFiles";
+import type { RspackPluginInstance, SwcLoaderOptions } from "@rspack/core";
 import {
   rspack,
   optimize,
-  RspackPluginInstance,
   EnvironmentPlugin,
   DefinePlugin,
-  SwcLoaderOptions,
   ProvidePlugin,
 } from "@rspack/core";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
-import { CompilerOptions } from "../options/compilerOptions";
-import { InjectScriptsPlugin } from "./plugins/injectScripts/InjectScriptsPlugin";
-import { CompilationResult } from "../result/compilationResult";
+import type { KWinTsConfig } from "../../config";
 import { createRemotePromise } from "../../internal/async/promise";
-import { rspackLogger } from "./logger";
 import { KWIN_TS_RUNTIME_PATH } from "../../runtime";
+import type { InputFile } from "../inputFile";
+import type { CompilationResult } from "../result/compilationResult";
+import { rspackLogger } from "./logger";
+import { KWinTsPlugin } from "./plugins/main/kwinTsPlugin";
 
-const resolveNodePolyfillPlugins = (
-  option: CompilerOptions["nodePolyfills"],
-) => {
+const resolveNodePolyfillPlugins = (option: KWinTsConfig["nodePolyfills"]) => {
   if (Array.isArray(option)) {
     if (!option.length) return [];
     return [
@@ -38,17 +35,17 @@ const resolveNodePolyfillPlugins = (
 };
 
 export const compileWithRspack = async (
-  options: CompilerOptions,
-  inputFiles: FindInputFilesResult,
+  config: KWinTsConfig,
+  entryFiles: InputFile[],
 ): Promise<CompilationResult> => {
   const logger = rspackLogger.clone();
-  logger.options.verbosity = options.verbosity ?? logger.options.verbosity;
+  logger.options.verbosity = config.verbosity ?? logger.options.verbosity;
 
   logger.debug("Compiling via rspack");
 
   const remotePromise = createRemotePromise<CompilationResult>();
 
-  const entry = inputFiles.entry.reduce(
+  const entry = entryFiles.reduce(
     (entry, file) => {
       const entryName = file.relativePath.replace(/\..+$/, "");
       entry[entryName] = [KWIN_TS_RUNTIME_PATH, file.absolutePath];
@@ -59,7 +56,7 @@ export const compileWithRspack = async (
   );
 
   const defaultOutputPath = path.resolve(
-    options.outputDirectory ?? "./kwin-ts-output",
+    config.outputDirectory ?? "./kwin-ts-output",
   );
   logger.debug("Output path:", defaultOutputPath);
 
@@ -72,8 +69,8 @@ export const compileWithRspack = async (
     }),
     new DefinePlugin(
       Object.entries({
-        __KWIN_TS_RUNTIME_RAW_FORMATTING: options.rawLogFormatting,
-        ...options.environmentVariables,
+        __KWIN_TS_RUNTIME_RAW_FORMATTING: config.rawLogFormatting,
+        ...config.environmentVariables,
       }).reduce(
         (acc, [key, value]) => ({
           ...acc,
@@ -85,8 +82,8 @@ export const compileWithRspack = async (
     new optimize.LimitChunkCountPlugin({
       maxChunks: Object.keys(entry).length,
     }),
-    new InjectScriptsPlugin(options),
-    ...resolveNodePolyfillPlugins(options.nodePolyfills),
+    new KWinTsPlugin(config),
+    ...resolveNodePolyfillPlugins(config.nodePolyfills),
   ];
 
   plugins.forEach((plugin) =>
@@ -95,7 +92,14 @@ export const compileWithRspack = async (
     ),
   );
 
-  /** @todo development mode just will not compile valid code (for loops may use never-defined vars), very difficult to debug */
+  /**
+   * @todo development mode just will not compile valid code (
+   * for loops may use never-defined vars), very difficult to debug
+   *
+   * Thanks to the babel transformations, this may not be important to fix,
+   * since an "optimize: false" option generates easier-to-debug output already.
+   *
+   */
   // const mode = options.optimize ? "production" : "development";
   const mode = "production";
   logger.info("Using mode: " + mode);
@@ -112,8 +116,8 @@ export const compileWithRspack = async (
       clean: true,
     },
     optimization: {
-      minimize: options.optimize,
-      mangleExports: options.optimize,
+      minimize: config.optimize,
+      mangleExports: config.optimize,
     },
     resolve: {
       extensions: [".js", ".ts"],
@@ -144,7 +148,7 @@ export const compileWithRspack = async (
     const outputs = Object.entries(stats?.toJson().namedChunkGroups ?? {}).map(
       ([name]) => ({
         outputPath: path.resolve(defaultOutputPath, name + ".js"),
-        input: inputFiles.all.find((file) =>
+        input: entryFiles.find((file) =>
           file.relativePath.match(new RegExp(name + ".[tj]s$")),
         ) ?? {
           absolutePath: "(error)",

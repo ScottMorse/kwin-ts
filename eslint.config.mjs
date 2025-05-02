@@ -1,21 +1,43 @@
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import importPlugin from "eslint-plugin-import";
+
+const ALLOW_UNUSED_VARNAME_PATTERN = "^_";
 
 export default defineConfig([
+  globalIgnores(["**/*.js"]),
   {
-    files: ["**/*.{js,mjs,cjs,ts}"],
-    plugins: { js },
+    files: [
+      "packages/**/*.ts",
+      "types/**/*.ts",
+      "examples/**/*.ts",
+      "config/**/*.ts",
+    ],
+    plugins: {
+      js,
+      import: importPlugin,
+    },
     extends: ["js/recommended"],
   },
   {
-    files: ["**/*.{js,mjs,cjs,ts}"],
+    files: [
+      "packages/**/*.ts",
+      "types/**/*.ts",
+      "examples/**/*.ts",
+      "config/**/*.ts",
+    ],
     languageOptions: { globals: globals.browser },
   },
   tseslint.configs.recommended,
   {
-    files: ["**/*.ts"],
+    files: [
+      "packages/**/*.ts",
+      "types/**/*.ts",
+      "examples/**/*.ts",
+      "config/**/*.ts",
+    ],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -26,6 +48,38 @@ export default defineConfig([
       "@typescript-eslint/consistent-type-exports": [
         "error",
         { fixMixedExportsWithInlineTypeSpecifier: true },
+      ],
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/no-empty-interface": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "no-empty": "warn",
+      "@typescript-eslint/no-extra-semi": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
+          argsIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
+          destructuredArrayIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
+          caughtErrorsIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
+        },
+      ],
+      eqeqeq: "error",
+      "no-console": "warn",
+      "prefer-const": "error",
+      "import/no-duplicates": "error",
+      "import/order": [
+        "warn",
+        {
+          alphabetize: { order: "asc", caseInsensitive: true },
+          pathGroups: [
+            {
+              pattern: "@/**",
+              group: "external",
+              position: "after",
+            },
+          ],
+        },
       ],
     },
   },

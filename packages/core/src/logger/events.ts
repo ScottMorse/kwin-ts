@@ -1,9 +1,10 @@
+import type {
+  TypedEvent} from "../internal/events/typedEventTarget";
 import {
-  TypedEvent,
   TypedEventTarget,
   createTypedEventFactory,
 } from "../internal/events/typedEventTarget";
-import { Log } from "./log";
+import type { Log } from "./log";
 
 export type LogEvent = TypedEvent<"log", { log: Log }>;
 

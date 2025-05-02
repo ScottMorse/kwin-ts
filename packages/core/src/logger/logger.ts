@@ -1,15 +1,15 @@
+/* eslint-disable no-console */
+
 import { TypedEventTarget } from "../internal/events/typedEventTarget";
 import { createPrivateMapFactory } from "../internal/object/map";
 import { getChildren, getParent, setParent } from "./child";
-import { LogEventTarget, LoggerEvents } from "./events";
-import { LogLevel, PrintableLogLevel } from "./level";
+import type { LogEventTarget, LoggerEvents } from "./events";
+import type { LogLevel, PrintableLogLevel } from "./level";
 import { _registerLog } from "./listen";
-import { CreateLogOptions, Log, LogMessages, createLog } from "./log";
-import {
-  CreateLoggerOptions,
-  LoggerOptions,
-  createLoggerOptions,
-} from "./options";
+import type { CreateLogOptions, Log, LogMessages } from "./log";
+import { createLog } from "./log";
+import type { CreateLoggerOptions, LoggerOptions } from "./options";
+import { createLoggerOptions } from "./options";
 import { formatName } from "./print";
 
 export type Logger = LogEventTarget & {

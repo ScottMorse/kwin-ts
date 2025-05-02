@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+
+
 /**
  * Note that the console does not have normal
  * Object behavior in QtScript. It doesn't

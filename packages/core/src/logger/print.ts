@@ -1,6 +1,9 @@
-import { getChildren, getParent } from "./child";
-import { LOG_LEVELS, PrintableLogLevel, meetsMinimumLevel } from "./level";
+/* eslint-disable no-console */
+
 import { format } from "node:util";
+import { getChildren, getParent } from "./child";
+import type { PrintableLogLevel } from "./level";
+import { LOG_LEVELS, meetsMinimumLevel } from "./level";
 import { __setPrinted, type Log } from "./log";
 import type { Logger } from "./logger";
 import { resolveOption } from "./options";

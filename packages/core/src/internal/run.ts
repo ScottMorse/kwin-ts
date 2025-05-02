@@ -1,6 +1,6 @@
 import { defaultLogger } from "../logger";
 import { fatalExit, handleUncaughtExceptions } from "./fatal";
-import { Func } from "./types";
+import type { Func } from "./types";
 
 export const runKwinTs = async <Run extends Func>(
   run: Run,

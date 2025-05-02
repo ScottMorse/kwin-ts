@@ -1,4 +1,4 @@
-import { InputFile } from "../inputFile";
+import type { InputFile } from "../inputFile";
 
 export interface CompilationOutput {
   outputPath: string;

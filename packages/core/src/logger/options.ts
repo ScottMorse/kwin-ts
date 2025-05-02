@@ -2,7 +2,7 @@ import { createPrivateMapFactory } from "../internal/object/map";
 import { getParent } from "./child";
 import { selectGlobalLoggerOption } from "./global";
 import type { Logger } from "./logger";
-import { VerbosityLevel } from "./verbosity";
+import type { VerbosityLevel } from "./verbosity";
 
 export interface BaseLoggerOptions {
   name: string;

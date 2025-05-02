@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "aaron-bond.better-comments",
+    "streetsidesoftware.code-spell-checker",
+    "EditorConfig.EditorConfig",
+    "dbaeumer.vscode-eslint",
+    "github.vscode-github-actions"
+  ]
+}

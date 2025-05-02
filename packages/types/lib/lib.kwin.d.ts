@@ -4,7 +4,7 @@
 
 /// <reference types="./lib.es-qtscript.d.ts" />
 
-import {
+import type {
   Workspace,
   Options,
   KWinGlobalMethods,

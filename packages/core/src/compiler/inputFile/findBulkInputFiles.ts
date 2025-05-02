@@ -1,22 +1,13 @@
-import { globSync } from "glob";
 import path from "path";
-import { InputFileType, extractFileNameType } from "./inputFile";
-
-export interface InputFile {
-  type: InputFileType;
-  name: string;
-  nameWithExt: string;
-  ext: string;
-  relativePath: string;
-  absolutePath: string;
-  inputPatternMatch: string;
-}
+import { globSync } from "glob";
+import type { InputFile, InputFileType} from "./inputFile";
+import { extractFileNameType } from "./inputFile";
 
 export type FindInputFilesResult = {
   [key in InputFileType | "all"]: InputFile[];
 };
 
-export const findInputFiles = (
+export const findBulkInputFiles = (
   baseDirectory: string,
   ...patterns: string[]
 ): FindInputFilesResult => {

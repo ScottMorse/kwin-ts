@@ -1,8 +1,8 @@
-import { QPoint, QRect, QSize } from "../qt";
-import { Desktop } from "./desktop";
-import { Output } from "./output";
-import { TileManager } from "./tileManager";
-import { KWindow } from "./window";
+import type { QPoint, QRect, QSize } from "../qt";
+import type { Desktop } from "./desktop";
+import type { Output } from "./output";
+import type { TileManager } from "./tileManager";
+import type { KWindow } from "./window";
 
 /** @todo unknown enum (need source code) */
 enum ClientAreaOption {}

@@ -1,5 +1,5 @@
 import { filterUndefined } from "../internal/object/filter";
-import { LogLevel } from "./level";
+import type { LogLevel } from "./level";
 
 export interface GlobalLoggerOptions {
   name: string;

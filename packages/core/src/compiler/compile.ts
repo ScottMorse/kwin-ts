@@ -1,65 +1,73 @@
+import type { KWinTsConfigOptions } from "../config";
+import { finalizeConfig } from "../config";
 import { runKwinTs } from "../internal/run";
 import { defaultLogger } from "../logger";
-import { findInputFiles } from "./inputFile";
+import type { InputFile } from "./inputFile";
+import { findBulkInputFiles, findKPackMain } from "./inputFile";
 import { compileLogger } from "./logger";
-import {
-  CreateCompilerOptions,
-  finalizeCompilerOptions,
-} from "./options/compilerOptions";
-import { CompilationResult } from "./result/compilationResult";
+import type { CompilationResult } from "./result/compilationResult";
 import { compileWithRspack } from "./rspack/compileWithRspack";
 
+export interface BulkInputOptions {
+  inputs: string | string[] | readonly string[];
+}
+
 export const compile = async (
-  options: CreateCompilerOptions,
+  options: KWinTsConfigOptions,
+  bulkInputOptions?: BulkInputOptions,
 ): Promise<CompilationResult> => {
   const result = await runKwinTs(async () => {
     try {
       const logger = compileLogger.clone();
       logger.options.verbosity = options.verbosity ?? logger.options.verbosity;
 
-      const finalOptions = finalizeCompilerOptions(options);
+      const config = finalizeConfig(options);
 
       for (const [key, value] of Object.entries(options)) {
         logger.debug(`Option: ${key} = ${JSON.stringify(value, null, 2)}`);
       }
 
-      logger.debug("Finding input files");
-      const inputFiles = findInputFiles(
-        finalOptions.inputBaseDirectory,
-        ...finalOptions.inputs,
-      );
-
-      if (!inputFiles.entry.length) {
-        logger.error(
-          `No entry scripts found for inputs ${JSON.stringify(
-            finalOptions.inputs,
-          )} in input base directory ${finalOptions.inputBaseDirectory}`,
+      const inputFiles: InputFile[] = [];
+      if (bulkInputOptions) {
+        logger.debug("Finding bulk input files");
+        const bulkResult = findBulkInputFiles(
+          config.baseDirectory,
+          ...bulkInputOptions.inputs,
         );
-        return {
-          outputs: [],
-          success: false,
-        };
+
+        if (!bulkResult.entry.length) {
+          logger.error(
+            `No entry scripts found for inputs ${JSON.stringify(
+              bulkInputOptions.inputs,
+            )} in input base directory ${config.baseDirectory}`,
+          );
+          return {
+            outputs: [],
+            success: false,
+          };
+        }
+
+        inputFiles.push(...bulkResult.entry);
+      } else {
+        const { mainFile, attemptPath } = findKPackMain(config.baseDirectory);
+        if (!mainFile) {
+          logger.error(`Could not find ${attemptPath}`);
+          return { outputs: [], success: false };
+        }
+        inputFiles.push(mainFile);
       }
 
-      logger.info(
-        `Found input files (${Object.keys(inputFiles)
+      logger.debug(
+        `Using input files:\n  ${inputFiles
+          .map((file) => file.absolutePath)
           .sort()
-          .map(
-            (key) =>
-              `${key}: ${inputFiles[
-                key as keyof typeof inputFiles
-              ].length.toLocaleString()}`,
-          )
-          .join(", ")}):`,
+          .join("\n  ")}`,
       );
 
       logger.info("Compiling");
-      const result = await compileWithRspack(
-        finalizeCompilerOptions(options),
-        inputFiles,
-      );
+      const result = await compileWithRspack(config, inputFiles);
       if (!result.success) {
-        throw result.error
+        throw result.error;
       }
       logger.debug("Result", JSON.stringify(result, null, 2));
       logger.info("Compiled successfully");

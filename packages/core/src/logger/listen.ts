@@ -1,8 +1,11 @@
-import { LogEvent, createLogEvent, getGlobalEventTarget } from "./events";
-import { LogLevel, meetsMinimumLevel } from "./level";
+import type { LogEvent} from "./events";
+import { createLogEvent, getGlobalEventTarget } from "./events";
+import type { LogLevel} from "./level";
+import { meetsMinimumLevel } from "./level";
 import type { Log } from "./log";
 import type { Logger } from "./logger";
-import { VerbosityLevel, resolveLogLevel } from "./verbosity";
+import type { VerbosityLevel} from "./verbosity";
+import { resolveLogLevel } from "./verbosity";
 
 export const _registerLog = (log: Log) => {
   getGlobalEventTarget().dispatchEvent(createLogEvent({ log }));

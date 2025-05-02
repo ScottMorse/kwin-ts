@@ -1,9 +1,9 @@
 import { deepFreeze } from "../internal/object/freeze";
 import { createPrivateMapFactory } from "../internal/object/map";
-import { NoMethods } from "../internal/types";
-import { LogLevel } from "./level";
+import type { NoMethods } from "../internal/types";
+import type { LogLevel } from "./level";
 import type { Logger } from "./logger";
-import { LoggerOptions } from "./options";
+import type { LoggerOptions } from "./options";
 import { printLog } from "./print";
 
 export type LogMainMessage = string | Error;
@@ -30,6 +30,7 @@ const privateMaps = createPrivateMapFactory<
     id: string;
   }
 >({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultInitialValues: {} as any,
 });
 
@@ -77,6 +78,7 @@ class _Log implements Log {
     try {
       printLog(this, force);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Failed to print log: ", e);
     }
   }

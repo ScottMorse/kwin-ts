@@ -1,5 +1,5 @@
-import { QPoint } from "../qt";
-import { Tile } from "./tile";
+import type { QPoint } from "../qt";
+import type { Tile } from "./tile";
 
 /** @todo unknown type */
 export interface TileModel {

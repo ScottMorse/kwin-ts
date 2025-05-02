@@ -1,8 +1,8 @@
-import { deepFreeze } from "../../internal/object/freeze";
-import { Override } from "../../internal/types";
-import { VerbosityLevel } from "../../logger";
 import { mergeWith } from "lodash";
-import { Alias } from "node-polyfill-webpack-plugin";
+import type { Alias } from "node-polyfill-webpack-plugin";
+import { deepFreeze } from "../internal/object/freeze";
+import type { Override } from "../internal/types";
+import type { VerbosityLevel } from "../logger";
 
 export type NodePolyfillOption = Exclude<Alias, "console">;
 
@@ -14,35 +14,35 @@ export interface EnvironmentVariables {
   [key: string]: unknown;
 }
 
-export interface CreateCompilerOptions {
-  /**
-   *
-   */
-  inputs: string | string[] | readonly string[];
+export interface KWinTsConfigOptions {
   /** Defaults to the current working directory */
-  inputBaseDirectory?: string;
+  baseDirectory?: string;
   /**
    * The directory where output scripts will be written.
-   * The default can be set via `process.env.KWIN_TS_DEFAULT_OUTPUT_PATH`
+   *
+   * By default, output goes into the input `baseDirectory`,
+   * which is the current working directory by default, so
+   * that the generated`main.js` will be alongside the original `main.ts`.
+   *
+   * The default can be set via `process.env.KWIN_TS_DEFAULT_OUTPUT_PATH`.
    */
   outputDirectory?: string;
-  /** If "auto", will determine based on NODE_ENV, disabling for NODE_ENV="development" */
+  /** Toggle minimization, mangling, etc. If "auto", will determine based on NODE_ENV, disabling for NODE_ENV="development" */
   optimize?: boolean | "auto";
-  /** Default true, polyfill any imports of node libraries */
+  /** Default `true`, polyfill any imports of node libraries */
   nodePolyfills?:
     | boolean
     | NodePolyfillOption[]
     | readonly NodePolyfillOption[];
-  /** The logging level for the compilation */
-  verbosity?: VerbosityLevel;
-  /**
-   * By default, this is false, meaning logs written
+  /** The logging level */
+  verbosity?: VerbosityLevel /**
+   * By default, this is `false`, meaning logs written
    * via `console` or `print` are formatted via
    * Node's formatter.
    *
-   * Enable raw formatting to get the original KWin
+   * Enable raw formatting to use the default KWin
    * script's output.
-   */
+   */;
   rawLogFormatting?: boolean;
   /**
    * Variables that can be accessed via `process.env` in
@@ -51,18 +51,17 @@ export interface CreateCompilerOptions {
   environmentVariables?: EnvironmentVariables;
 }
 
-export type CompilerOptions = Override<
-  Required<CreateCompilerOptions>,
+export type KWinTsConfig = Override<
+  Required<KWinTsConfigOptions>,
   {
     optimize: boolean;
   }
 >;
 
-export const DEFAULT_COMPILER_OPTIONS: CompilerOptions = deepFreeze({
-  inputs: [],
+export const DEFAULT_CONFIG: KWinTsConfig = deepFreeze({
   outputDirectory:
     process.env.KWIN_TS_DEFAULT_OUTPUT_PATH ?? "./kwin-ts-output",
-  inputBaseDirectory: process.env.KWIN_TS_INPUT_BASE_DIRECTORY ?? process.cwd(),
+  baseDirectory: process.env.KWIN_TS_INPUT_BASE_DIRECTORY ?? process.cwd(),
   optimize: process.env.NODE_ENV !== "development",
   nodePolyfills: true,
   verbosity:
@@ -75,17 +74,15 @@ export const DEFAULT_COMPILER_OPTIONS: CompilerOptions = deepFreeze({
   ),
 });
 
-export const finalizeCompilerOptions = (
-  options: CreateCompilerOptions,
-): CompilerOptions =>
+export const finalizeConfig = (options: KWinTsConfigOptions): KWinTsConfig =>
   mergeWith(
     {},
-    DEFAULT_COMPILER_OPTIONS,
+    DEFAULT_CONFIG,
     {
       ...options,
       optimize:
         options.optimize === "auto"
-          ? DEFAULT_COMPILER_OPTIONS.optimize
+          ? DEFAULT_CONFIG.optimize
           : options.optimize,
     },
     (objValue: unknown, srcValue: unknown) => {
