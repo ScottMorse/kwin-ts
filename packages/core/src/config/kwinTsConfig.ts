@@ -1,5 +1,6 @@
 import { mergeWith } from "lodash";
 import type { Alias } from "node-polyfill-webpack-plugin";
+import { expandHome } from "../internal/fileSystem/home";
 import { deepFreeze } from "../internal/object/freeze";
 import type { Override } from "../internal/types";
 import type { VerbosityLevel } from "../logger";
@@ -16,11 +17,11 @@ export interface EnvironmentVariables {
 
 export interface KWinTsConfigOptions {
   /** Defaults to the current working directory */
-  baseDirectory?: string;
+  inputDirectory?: string;
   /**
    * The directory where output scripts will be written.
    *
-   * By default, output goes into the input `baseDirectory`,
+   * By default, output goes into the input `inputDirectory`,
    * which is the current working directory by default, so
    * that the generated`main.js` will be alongside the original `main.ts`.
    *
@@ -29,6 +30,8 @@ export interface KWinTsConfigOptions {
   outputDirectory?: string;
   /** Toggle minimization, mangling, etc. If "auto", will determine based on NODE_ENV, disabling for NODE_ENV="development" */
   optimize?: boolean | "auto";
+  /** Default `true`, clean the output directory before writing */
+  cleanOutput?: boolean;
   /** Default `true`, polyfill any imports of node libraries */
   nodePolyfills?:
     | boolean
@@ -61,9 +64,10 @@ export type KWinTsConfig = Override<
 export const DEFAULT_CONFIG: KWinTsConfig = deepFreeze({
   outputDirectory:
     process.env.KWIN_TS_DEFAULT_OUTPUT_PATH ?? "./kwin-ts-output",
-  baseDirectory: process.env.KWIN_TS_INPUT_BASE_DIRECTORY ?? process.cwd(),
+  inputDirectory: process.env.KWIN_TS_INPUT_BASE_DIRECTORY ?? process.cwd(),
   optimize: process.env.NODE_ENV !== "development",
   nodePolyfills: true,
+  cleanOutput: false,
   verbosity:
     (process.env.KWIN_TS_COMPILER_VERBOSITY_LEVEL as VerbosityLevel) ??
     "default",
@@ -74,12 +78,27 @@ export const DEFAULT_CONFIG: KWinTsConfig = deepFreeze({
   ),
 });
 
+const resolveDirectory = (
+  dir: string | null | undefined,
+  defaultValue: string,
+) => {
+  return dir ? expandHome(dir) : defaultValue;
+};
+
 export const finalizeConfig = (options: KWinTsConfigOptions): KWinTsConfig =>
   mergeWith(
     {},
     DEFAULT_CONFIG,
     {
       ...options,
+      inputDirectory: resolveDirectory(
+        options.inputDirectory,
+        DEFAULT_CONFIG.inputDirectory,
+      ),
+      outputDirectory: resolveDirectory(
+        options.outputDirectory,
+        DEFAULT_CONFIG.outputDirectory,
+      ),
       optimize:
         options.optimize === "auto"
           ? DEFAULT_CONFIG.optimize

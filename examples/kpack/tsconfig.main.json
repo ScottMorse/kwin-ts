@@ -1,0 +1,5 @@
+{
+  "extends": "../../config/package/tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": ["src/my-kpackage/**/*"]
+}

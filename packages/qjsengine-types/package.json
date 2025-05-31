@@ -1,0 +1,7 @@
+{
+  "name": "@kwin-ts/qjsengine-types",
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "extends": "../base/tsconfig.json",
-  "compilerOptions": {
-    "lib": [],
-    "types": ["@kwin-ts/types"],
-    "target": "ES2017"
-  }
-}

@@ -1,4 +1,4 @@
 {
   "extends": "../../config/kwin-script/tsconfig.json",
-  "include": ["src/**/*.runtime.ts"]
+  "include": ["src/my-kpackage/contents/code/*.ts"]
 }

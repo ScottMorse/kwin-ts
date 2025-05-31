@@ -1,0 +1,13 @@
+{
+  "name": "example-kpack",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "dev": "nodemon src/main.ts",
+    "start": "bun run src/main.ts"
+  },
+  "dependencies": {
+    "@kwin-ts/core": "workspace:*"
+  }
+}

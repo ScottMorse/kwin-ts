@@ -1,0 +1,7 @@
+{
+  "name": "@kwin-ts/kwin-script-types",
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

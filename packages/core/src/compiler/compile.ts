@@ -1,6 +1,8 @@
 import type { KWinTsConfigOptions } from "../config";
 import { finalizeConfig } from "../config";
+import { createTempDir } from "../internal/fileSystem/tempDir";
 import { runKwinTs } from "../internal/run";
+import { copyKPackageFiles } from "../kpackage";
 import { defaultLogger } from "../logger";
 import type { InputFile } from "./inputFile";
 import { findBulkInputFiles, findKPackMain } from "./inputFile";
@@ -31,7 +33,7 @@ export const compile = async (
       if (bulkInputOptions) {
         logger.debug("Finding bulk input files");
         const bulkResult = findBulkInputFiles(
-          config.baseDirectory,
+          config.inputDirectory,
           ...bulkInputOptions.inputs,
         );
 
@@ -39,7 +41,7 @@ export const compile = async (
           logger.error(
             `No entry scripts found for inputs ${JSON.stringify(
               bulkInputOptions.inputs,
-            )} in input base directory ${config.baseDirectory}`,
+            )} in input base directory ${config.inputDirectory}`,
           );
           return {
             outputs: [],
@@ -49,12 +51,16 @@ export const compile = async (
 
         inputFiles.push(...bulkResult.entry);
       } else {
-        const { mainFile, attemptPath } = findKPackMain(config.baseDirectory);
+        const { mainFile, attemptPath } = findKPackMain(config.inputDirectory);
         if (!mainFile) {
           logger.error(`Could not find ${attemptPath}`);
           return { outputs: [], success: false };
         }
         inputFiles.push(mainFile);
+
+        if (!options.outputDirectory) {
+          config.outputDirectory = config.inputDirectory;
+        }
       }
 
       logger.debug(
@@ -64,11 +70,27 @@ export const compile = async (
           .join("\n  ")}`,
       );
 
-      logger.info("Compiling");
+      const tempDir = createTempDir();
+      if (!bulkInputOptions) {
+        copyKPackageFiles(config.inputDirectory, tempDir);
+      }
+
+      logger.info(
+        `Compiling ${bulkInputOptions ? "bulk input" : config.inputDirectory}`,
+      );
       const result = await compileWithRspack(config, inputFiles);
       if (!result.success) {
         throw result.error;
       }
+
+      if (!bulkInputOptions) {
+        copyKPackageFiles(tempDir, config.outputDirectory).forEach(
+          ({ output }) => {
+            logger.debug(`Copying KPackage file to ${output}`);
+          },
+        );
+      }
+
       logger.debug("Result", JSON.stringify(result, null, 2));
       logger.info("Compiled successfully");
 

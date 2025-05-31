@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import type { InputFile} from "./inputFile";
+import type { InputFile } from "./inputFile";
 import { extractFileNameType } from "./inputFile";
 
 export type FindKPackMainResult = {
@@ -8,11 +8,11 @@ export type FindKPackMainResult = {
   attemptPath: string;
 };
 
-export const getKPackMainPath = (baseDirectory: string) =>
-  path.resolve(baseDirectory, "contents", "code", `main.ts`);
+export const getKPackMainPath = (inputDirectory: string) =>
+  path.resolve(inputDirectory, "contents", "code", `main.ts`);
 
-export const findKPackMain = (baseDirectory: string): FindKPackMainResult => {
-  const filePath = getKPackMainPath(baseDirectory);
+export const findKPackMain = (inputDirectory: string): FindKPackMainResult => {
+  const filePath = getKPackMainPath(inputDirectory);
   if (!fs.existsSync(filePath)) {
     return {
       mainFile: null,
@@ -32,14 +32,14 @@ export const findKPackMain = (baseDirectory: string): FindKPackMainResult => {
     };
   }
 
-  const absolutePath = path.resolve(baseDirectory, filePath);
+  const absolutePath = path.resolve(inputDirectory, filePath);
 
   const inputFile: InputFile = {
     type,
     name,
     nameWithExt,
     ext,
-    relativePath: path.relative(baseDirectory, absolutePath),
+    relativePath: path.relative(inputDirectory, absolutePath),
     absolutePath,
   };
 

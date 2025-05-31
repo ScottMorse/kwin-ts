@@ -1,4 +1,0 @@
-{
-  "extends": "../../config/kwin/tsconfig.json",
-  "include": ["src/scripts/**/*.ts"]
-}

@@ -113,7 +113,6 @@ export const compileWithRspack = async (
     output: {
       filename: "[name].js",
       path: defaultOutputPath,
-      clean: true,
     },
     optimization: {
       minimize: config.optimize,

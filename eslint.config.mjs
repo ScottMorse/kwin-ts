@@ -56,7 +56,7 @@ export default defineConfig([
       "@typescript-eslint/no-extra-semi": "off",
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        "warn",
         {
           varsIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
           argsIgnorePattern: ALLOW_UNUSED_VARNAME_PATTERN,
@@ -65,6 +65,7 @@ export default defineConfig([
         },
       ],
       eqeqeq: "error",
+      "no-case-declarations": "off",
       "no-console": "warn",
       "prefer-const": "error",
       "import/no-duplicates": "error",
@@ -81,6 +82,14 @@ export default defineConfig([
           ],
         },
       ],
+    },
+  },
+  {
+    files: ["**/*.d.ts"],
+    overrides: {
+      rules: {
+        "@typescript-eslint/no-var": "off",
+      },
     },
   },
 ]);

@@ -1,6 +1,6 @@
 import path from "path";
 import { globSync } from "glob";
-import type { InputFile, InputFileType} from "./inputFile";
+import type { InputFile, InputFileType } from "./inputFile";
 import { extractFileNameType } from "./inputFile";
 
 export type FindInputFilesResult = {
@@ -8,7 +8,7 @@ export type FindInputFilesResult = {
 };
 
 export const findBulkInputFiles = (
-  baseDirectory: string,
+  inputDirectory: string,
   ...patterns: string[]
 ): FindInputFilesResult => {
   const result: FindInputFilesResult = {
@@ -19,7 +19,7 @@ export const findBulkInputFiles = (
 
   for (const pattern of patterns) {
     const files = globSync(pattern.replace(/(\(\/|^)\*$/, "*.{ts,js}"), {
-      cwd: baseDirectory,
+      cwd: inputDirectory,
     });
 
     files.forEach((file) => {
@@ -30,14 +30,14 @@ export const findBulkInputFiles = (
 
       if (ext !== ".ts" && ext !== ".js") return;
 
-      const absolutePath = path.resolve(baseDirectory, file);
+      const absolutePath = path.resolve(inputDirectory, file);
 
       const inputFile: InputFile = {
         type,
         name,
         nameWithExt,
         ext,
-        relativePath: path.relative(baseDirectory, absolutePath),
+        relativePath: path.relative(inputDirectory, absolutePath),
         absolutePath,
         inputPatternMatch: pattern,
       };

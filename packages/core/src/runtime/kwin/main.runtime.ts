@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import format from "format-util";
+import { format } from "util";
 
 const rawPrint = print;
 
@@ -19,8 +19,7 @@ const rawConsole: Console = {
 };
 
 if (!process.env.__KWIN_TS_RUNTIME_RAW_FORMATTING) {
-  globalThis.print = (...args: unknown[]) =>
-    rawPrint(format(...(args as [string, ...unknown[]])));
+  globalThis.print = (...args: unknown[]) => rawPrint(format(...args));
 
   const consoleMethods: NonNullable<
     {
@@ -32,11 +31,11 @@ if (!process.env.__KWIN_TS_RUNTIME_RAW_FORMATTING) {
 
   consoleMethods.forEach((method) => {
     console[method] = (...args: unknown[]) =>
-      rawConsole[method](format(...(args as [string, ...unknown[]])));
+      rawConsole[method](format(...args));
   });
 }
 
-globalThis.kwinTs = {
-  rawPrint: rawPrint,
+globalThis.KWinTS = {
+  rawPrint,
   rawConsole,
 };

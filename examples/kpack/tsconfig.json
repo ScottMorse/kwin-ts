@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.main.json"
+    },
+    {
+      "path": "./tsconfig.kwin.json"
+    }
+  ],
+  "extends": "../../config/base/tsconfig.json"
+}

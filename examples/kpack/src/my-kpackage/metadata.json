@@ -1,0 +1,11 @@
+{
+  "KPlugin": {
+    "Id": "my-kwin-ts-script-example",
+    "Name": "My KWin TS Script Example",
+    "Version": "0.1",
+    "Description": "An example KWin script written in TypeScript."
+  },
+  "KPackageStructure": "KWin/Script",
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "code/main.js"
+}
